@@ -15,6 +15,7 @@ public class UrgencyPolicy {
     private String name;
     private String description;
 
+    // Add these methods so tests can access ID
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
