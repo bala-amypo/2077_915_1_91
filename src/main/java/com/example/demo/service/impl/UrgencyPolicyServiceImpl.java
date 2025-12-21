@@ -24,4 +24,3 @@ public class UrgencyPolicyServiceImpl implements UrgencyPolicyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Policy not found"));
     }
 }
-

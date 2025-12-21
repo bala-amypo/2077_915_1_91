@@ -28,3 +28,4 @@ public class CategorizationRuleServiceImpl implements CategorizationRuleService 
                 .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
     }
 }
+
