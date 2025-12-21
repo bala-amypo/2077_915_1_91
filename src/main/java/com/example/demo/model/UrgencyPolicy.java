@@ -1,6 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class UrgencyPolicy {
@@ -9,33 +12,30 @@ public class UrgencyPolicy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String keyword;
+    private String name;
+    private String description;
 
-    private String urgencyOverride;
-
- 
+    // Getter and Setter for id
     public Long getId() {
         return id;
     }
-
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getKeyword() {
-        return keyword;
+    // Getter and Setter for name
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    // Getter and Setter for description
+    public String getDescription() {
+        return description;
     }
-
-    public String getUrgencyOverride() {
-        return urgencyOverride;
-    }
-
-    public void setUrgencyOverride(String urgencyOverride) {
-        this.urgencyOverride = urgencyOverride;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
