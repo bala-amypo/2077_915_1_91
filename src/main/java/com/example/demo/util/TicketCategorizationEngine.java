@@ -7,47 +7,43 @@ import java.util.List;
 
 public class TicketCategorizationEngine {
 
-  public void categorize(
-      Ticket ticket,
-      List<Category> categories,
-      List<CategorizationRule> rules,
-      List<UrgencyPolicy> policies,
-      List<CategorizationLog> logs) {
+    public void categorize(
+            Ticket ticket,
+            List<Category> categories,
+            List<CategorizationRule> rules,
+            List<UrgencyPolicy> policies,
+            List<CategorizationLog> logs) {
 
-    
-    ticket.setUrgencyLevel("LOW");
-    rules.stream()
-        .sorted(Comparator.comparingInt(CategorizationRule::getPriority).reversed())
-        .filter(rule -> matches(rule, ticket))
-        .findFirst()
-        .ifPresent(rule -> {
-          ticket.setAssignedCategory(rule.getCategory());
-          ticket.setUrgencyLevel(rule.getCategory().getDefaultUrgency());
+        CategorizationRule matchedRule = rules.stream()
+                .filter(r -> r.getKeyword() != null
+                        && ticket.getDescription() != null
+                        && ticket.getDescription().toLowerCase()
+                        .contains(r.getKeyword().toLowerCase()))
+                .max(Comparator.comparingInt(CategorizationRule::getPriority))
+                .orElse(null);
 
-          CategorizationLog log = new CategorizationLog();
-          log.setTicket(ticket);
-          log.setAppliedRule(rule);
-          logs.add(log);
-        });
+        if (matchedRule != null) {
+            ticket.setAssignedCategory(matchedRule.getCategory());
+            ticket.setUrgencyLevel(matchedRule.getCategory().getDefaultUrgency());
+        }
 
-    for (UrgencyPolicy policy : policies) {
-      if (ticket.getTitle() != null &&
-          ticket.getTitle().toLowerCase().contains(policy.getKeyword().toLowerCase())
-          ||
-          ticket.getDescription() != null &&
-          ticket.getDescription().toLowerCase().contains(policy.getKeyword().toLowerCase())) {
+        for (UrgencyPolicy policy : policies) {
+            if (ticket.getDescription() != null
+                    && policy.getKeyword() != null
+                    && ticket.getDescription().toLowerCase()
+                    .contains(policy.getKeyword().toLowerCase())) {
+                ticket.setUrgencyLevel(policy.getUrgencyOverride());
+            }
+        }
 
-        ticket.setUrgencyLevel(policy.getUrgencyOverride());
-      }
+        if (ticket.getUrgencyLevel() == null) {
+            ticket.setUrgencyLevel("LOW");
+        }
+
+        CategorizationLog log = new CategorizationLog();
+        log.setTicket(ticket);
+        log.setAppliedRule(matchedRule);
+        log.setFinalUrgency(ticket.getUrgencyLevel());
+        logs.add(log);
     }
-  }
-
-  private boolean matches(CategorizationRule rule, Ticket ticket) {
-    String keyword = rule.getKeyword().toLowerCase();
-
-    String title = ticket.getTitle() == null ? "" : ticket.getTitle().toLowerCase();
-    String desc = ticket.getDescription() == null ? "" : ticket.getDescription().toLowerCase();
-
-    return title.contains(keyword) || desc.contains(keyword);
-  }
 }
