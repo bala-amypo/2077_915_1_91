@@ -1,13 +1,42 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.model.Category;
+import com.example.demo.repository.CategoryRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/api/categories")
 public class CategoryController {
 
-    @GetMapping("/health")
-    public String health() {
-        return "Application is running successfully";
+    private final CategoryRepository categoryRepository;
+
+    public CategoryController(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @PostMapping
+    public Category createCategory(@RequestBody Category category) {
+        return categoryRepository.save(category);
+    }
+
+
+    @GetMapping
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+   
+    @GetMapping("/{id}")
+    public Category getCategoryById(@PathVariable Long id) {
+        return categoryRepository.findById(id).orElse(null);
+    }
+
+  
+    @DeleteMapping("/{id}")
+    public String deleteCategory(@PathVariable Long id) {
+        categoryRepository.deleteById(id);
+        return "Category deleted successfully";
     }
 }
