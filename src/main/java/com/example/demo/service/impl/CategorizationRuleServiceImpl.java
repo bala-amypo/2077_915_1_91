@@ -8,25 +8,23 @@ import com.example.demo.service.CategorizationRuleService;
 
 public class CategorizationRuleServiceImpl implements CategorizationRuleService {
 
-  private final CategorizationRuleRepository ruleRepo;
-  private final CategoryRepository categoryRepo;
+    private final CategorizationRuleRepository ruleRepository;
+    private final CategoryRepository categoryRepository;
 
-  public CategorizationRuleServiceImpl(
-      CategorizationRuleRepository ruleRepo,
-      CategoryRepository categoryRepo
-  ) {
-    this.ruleRepo = ruleRepo;
-    this.categoryRepo = categoryRepo;
-  }
+    public CategorizationRuleServiceImpl(CategorizationRuleRepository ruleRepository,
+                                         CategoryRepository categoryRepository) {
+        this.ruleRepository = ruleRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
-  @Override
-  public CategorizationRule createRule(CategorizationRule rule) {
-    return ruleRepo.save(rule);
-  }
+    @Override
+    public CategorizationRule createRule(CategorizationRule rule) {
+        return ruleRepository.save(rule);
+    }
 
-  @Override
-  public CategorizationRule getRule(Long id) {
-    return ruleRepo.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
-  }
+    @Override
+    public CategorizationRule getRule(Long id) {
+        return ruleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
+    }
 }

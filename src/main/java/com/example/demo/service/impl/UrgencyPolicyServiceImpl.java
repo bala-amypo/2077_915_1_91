@@ -7,20 +7,21 @@ import com.example.demo.service.UrgencyPolicyService;
 
 public class UrgencyPolicyServiceImpl implements UrgencyPolicyService {
 
-  private final UrgencyPolicyRepository repo;
+    private final UrgencyPolicyRepository policyRepository;
 
-  public UrgencyPolicyServiceImpl(UrgencyPolicyRepository repo) {
-    this.repo = repo;
-  }
+    public UrgencyPolicyServiceImpl(UrgencyPolicyRepository policyRepository) {
+        this.policyRepository = policyRepository;
+    }
 
-  @Override
-  public UrgencyPolicy createPolicy(UrgencyPolicy policy) {
-    return repo.save(policy);
-  }
+    @Override
+    public UrgencyPolicy createPolicy(UrgencyPolicy policy) {
+        return policyRepository.save(policy);
+    }
 
-  @Override
-  public UrgencyPolicy getPolicy(Long id) {
-    return repo.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Policy not found"));
-  }
+    @Override
+    public UrgencyPolicy getPolicy(Long id) {
+        return policyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Policy not found"));
+    }
 }
+

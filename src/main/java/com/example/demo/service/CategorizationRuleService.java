@@ -8,3 +8,4 @@ public interface CategorizationRuleService {
 
     CategorizationRule getRule(Long id);
 }
+

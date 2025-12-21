@@ -6,7 +6,10 @@ import com.example.demo.model.Ticket;
 import java.util.List;
 
 public interface CategorizationEngineService {
-  Ticket categorizeTicket(Long ticketId);
-  List<CategorizationLog> getLogsForTicket(Long ticketId);
-  CategorizationLog getLog(Long id);
+
+    Ticket categorizeTicket(Long ticketId);
+
+    List<CategorizationLog> getLogsForTicket(Long ticketId);
+
+    CategorizationLog getLog(Long logId);
 }

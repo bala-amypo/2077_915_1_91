@@ -8,32 +8,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserServiceImpl implements UserService {
 
-  private final UserRepository repo;
-  private final PasswordEncoder encoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-  public UserServiceImpl(UserRepository repo, PasswordEncoder encoder) {
-    this.repo = repo;
-    this.encoder = encoder;
-  }
-
-  @Override
-  public User register(User user) {
-    if (repo.existsByEmail(user.getEmail())) {
-      throw new IllegalArgumentException("Email already in use");
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-    user.setPassword(encoder.encode(user.getPassword()));
-    return repo.save(user);
-  }
 
-  @Override
-  public User findByEmail(String email) {
-    return repo.findByEmail(email)
-        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-  }
+    @Override
+    public User register(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already in use");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
 
-  @Override
-  public User getById(Long id) {
-    return repo.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-  }
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 }
