@@ -9,31 +9,53 @@ import java.util.Set;
 @Table(name = "categories")
 public class Category {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String categoryName;
-  private String defaultUrgency;
-  private LocalDateTime createdAt;
+    private String categoryName;
 
-  @ManyToMany
-  private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
+    private String defaultUrgency;
 
-  @PrePersist
-  public void prePersist() {
-    createdAt = LocalDateTime.now();
-  }
+    private LocalDateTime createdAt;
 
-  public Long getId() { return id; }
-  public void setId(Long id) { this.id = id; }
+    @ManyToMany
+    private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
-  public String getCategoryName() { return categoryName; }
-  public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
-  public String getDefaultUrgency() { return defaultUrgency; }
-  public void setDefaultUrgency(String defaultUrgency) { this.defaultUrgency = defaultUrgency; }
+    public Long getId() {
+        return id;
+    }
 
-  public Set<UrgencyPolicy> getUrgencyPolicies() { return urgencyPolicies; }
-  public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+    
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+    
+    public String getDefaultUrgency() {
+        return defaultUrgency;
+    }
+    
+    public void setDefaultUrgency(String defaultUrgency) {
+        this.defaultUrgency = defaultUrgency;
+    }
+
+    public Set<UrgencyPolicy> getUrgencyPolicies() {
+        return urgencyPolicies;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

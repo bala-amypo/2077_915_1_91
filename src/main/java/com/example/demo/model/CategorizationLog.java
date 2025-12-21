@@ -7,28 +7,49 @@ import java.time.LocalDateTime;
 @Table(name = "categorization_logs")
 public class CategorizationLog {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  private Ticket ticket;
+    @ManyToOne
+    private Ticket ticket;
 
-  @ManyToOne
-  private CategorizationRule appliedRule;
+    @ManyToOne
+    private CategorizationRule appliedRule;
 
-  private String appliedUrgency;
-  private LocalDateTime createdAt = LocalDateTime.now();
+    private String finalUrgency;
 
-  public Long getId() { return id; }
-  public void setId(Long id) { this.id = id; }
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-  public Ticket getTicket() { return ticket; }
-  public void setTicket(Ticket ticket) { this.ticket = ticket; }
+    public Long getId() {
+        return id;
+    }
 
-  public CategorizationRule getAppliedRule() { return appliedRule; }
-  public void setAppliedRule(CategorizationRule appliedRule) { this.appliedRule = appliedRule; }
+    public Ticket getTicket() {
+        return ticket;
+    }
 
-  public String getAppliedUrgency() { return appliedUrgency; }
-  public void setAppliedUrgency(String appliedUrgency) { this.appliedUrgency = appliedUrgency; }
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
+    public CategorizationRule getAppliedRule() {
+        return appliedRule;
+    }
+
+    public void setAppliedRule(CategorizationRule appliedRule) {
+        this.appliedRule = appliedRule;
+    }
+
+    public String getFinalUrgency() {
+        return finalUrgency;
+    }
+
+    public void setFinalUrgency(String finalUrgency) {
+        this.finalUrgency = finalUrgency;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

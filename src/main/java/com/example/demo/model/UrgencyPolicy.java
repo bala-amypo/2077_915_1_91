@@ -9,35 +9,59 @@ import java.util.Set;
 @Table(name = "urgency_policies")
 public class UrgencyPolicy {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String policyName;
-  private String keyword;
-  private String urgencyOverride;
-  private LocalDateTime createdAt;
+    private String policyName;
 
-  @ManyToMany(mappedBy = "urgencyPolicies")
-  private Set<Category> categories = new HashSet<>();
+    private String keyword;
 
-  @PrePersist
-  public void prePersist() {
-    createdAt = LocalDateTime.now();
-  }
+    private String urgencyOverride;
 
-  public Long getId() { return id; }
-  public void setId(Long id) { this.id = id; }
+    private LocalDateTime createdAt;
 
-  public String getPolicyName() { return policyName; }
-  public void setPolicyName(String policyName) { this.policyName = policyName; }
+    @ManyToMany(mappedBy = "urgencyPolicies")
+    private Set<Category> categories = new HashSet<>();
 
-  public String getKeyword() { return keyword; }
-  public void setKeyword(String keyword) { this.keyword = keyword; }
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
-  public String getUrgencyOverride() { return urgencyOverride; }
-  public void setUrgencyOverride(String urgencyOverride) { this.urgencyOverride = urgencyOverride; }
+    public Long getId() {
+        return id;
+    }
 
-  public Set<Category> getCategories() { return categories; }
-  public LocalDateTime getCreatedAt() { return createdAt; }
+    public String getPolicyName() {
+        return policyName;
+    }
+
+    public void setPolicyName(String policyName) {
+        this.policyName = policyName;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getUrgencyOverride() {
+        return urgencyOverride;
+    }
+
+    public void setUrgencyOverride(String urgencyOverride) {
+        this.urgencyOverride = urgencyOverride;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
