@@ -10,33 +10,30 @@ import java.util.List;
 @RequestMapping("/api/categories")
 public class CategoryController {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryRepository repo;
 
-    public CategoryController(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public CategoryController(CategoryRepository repo) {
+        this.repo = repo;
     }
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryRepository.save(category);
+    public Category create(@RequestBody Category c) {
+        return repo.save(c);
     }
-
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<Category> getAll() {
+        return repo.findAll();
     }
 
-   
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable Long id) {
-        return categoryRepository.findById(id).orElse(null);
+    public Category getById(@PathVariable Long id) {
+        return repo.findById(id).orElse(null);
     }
 
-  
     @DeleteMapping("/{id}")
-    public String deleteCategory(@PathVariable Long id) {
-        categoryRepository.deleteById(id);
-        return "Category deleted successfully";
+    public String delete(@PathVariable Long id) {
+        repo.deleteById(id);
+        return "Category deleted";
     }
 }
