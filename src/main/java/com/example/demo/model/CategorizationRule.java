@@ -15,22 +15,53 @@ public class CategorizationRule {
     private Integer priority;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     private LocalDateTime createdAt;
 
     @PrePersist
-    void onCreate() {
+    public void onCreate() {
         createdAt = LocalDateTime.now();
     }
 
-    // getters & setters
-    public String getKeyword() { return keyword; }
-    public void setKeyword(String keyword) { this.keyword = keyword; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getMatchType() { return matchType; }
-    public void setMatchType(String matchType) { this.matchType = matchType; }
+    public String getKeyword() {
+        return keyword;
+    }
 
-    public Integer getPriority() { return priority; }
-    public void setPriority(Integer priority) { this.priority = priority; }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getMatchType() {
+        return matchType;
+    }
+
+    public void setMatchType(String matchType) {
+        this.matchType = matchType;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
