@@ -9,6 +9,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategorizationRuleServiceImpl implements CategorizationRuleService {
@@ -39,8 +40,9 @@ public class CategorizationRuleServiceImpl implements CategorizationRuleService 
 
         return ruleRepository.findAll()
                 .stream()
-                .filter(r -> r.getCategory().getId().equals(category.getId()))
-                .toList();
+                .filter(rule -> rule.getCategory() != null
+                        && rule.getCategory().equals(category))
+                .collect(Collectors.toList());
     }
 
     @Override
