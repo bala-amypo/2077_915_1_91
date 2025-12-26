@@ -1,33 +1,31 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Ticket;
-import com.example.demo.service.TicketService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/tickets")
+@Tag(name = "Ticket Controller")
 public class TicketController {
 
-    private final TicketService ticketService;
-
-    public TicketController(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
-
     @PostMapping
-    public Ticket createTicket(@RequestBody Ticket ticket) {
-        return ticketService.createTicket(ticket);
+    public String createTicket(@RequestBody Object ticket) {
+        return "Ticket created";
     }
 
     @GetMapping
-    public List<Ticket> getAllTickets() {
-        return ticketService.getAllTickets();
+    public String listTickets() {
+        return "List tickets";
     }
 
     @GetMapping("/{id}")
-    public Ticket getTicket(@PathVariable Long id) {
-        return ticketService.getTicket(id);
+    public String getTicket(@PathVariable Long id) {
+        return "Ticket " + id;
     }
 }
