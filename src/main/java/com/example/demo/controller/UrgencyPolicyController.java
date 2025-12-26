@@ -1,31 +1,33 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.example.demo.model.UrgencyPolicy;
+import com.example.demo.service.UrgencyPolicyService;
+import org.springframework.web.bind.annotation.*;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/policies")
-@Tag(name = "Urgency Policy Controller")
 public class UrgencyPolicyController {
 
+    private final UrgencyPolicyService policyService;
+
+    public UrgencyPolicyController(UrgencyPolicyService policyService) {
+        this.policyService = policyService;
+    }
+
     @PostMapping
-    public String createPolicy(@RequestBody Object policy) {
-        return "Policy created";
+    public UrgencyPolicy createPolicy(@RequestBody UrgencyPolicy policy) {
+        return policyService.createPolicy(policy);
     }
 
     @GetMapping
-    public String listPolicies() {
-        return "List policies";
+    public List<UrgencyPolicy> getAllPolicies() {
+        return policyService.getAllPolicies();
     }
 
     @GetMapping("/{id}")
-    public String getPolicy(@PathVariable Long id) {
-        return "Policy " + id;
+    public UrgencyPolicy getPolicy(@PathVariable Long id) {
+        return policyService.getPolicy(id);
     }
 }
