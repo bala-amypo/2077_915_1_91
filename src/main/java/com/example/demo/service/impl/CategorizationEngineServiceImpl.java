@@ -1,12 +1,11 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.CategorizationEngineService;
 import com.example.demo.util.TicketCategorizationEngine;
+import com.example.demo.exception.ResourceNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CategorizationEngineServiceImpl implements CategorizationEngineService {
@@ -39,19 +38,14 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
-        List<CategorizationLog> logs = new ArrayList<>();
+        List<Category> categories = categoryRepository.findAll();
+        List<CategorizationRule> rules = ruleRepository.findAll();
+        List<UrgencyPolicy> policies = policyRepository.findAll();
+        List<CategorizationLog> logs = logRepository.findAll();
 
-        engine.categorize(
-                ticket,
-                categoryRepository.findAll(),
-                ruleRepository.findAll(),
-                policyRepository.findAll(),
-                logs
-        );
+        engine.categorize(ticket, categories, rules, policies, logs);
 
         ticketRepository.save(ticket);
-        logRepository.saveAll(logs);
-
         return ticket;
     }
 
@@ -61,8 +55,8 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     }
 
     @Override
-    public CategorizationLog getLog(Long logId) {
-        return logRepository.findById(logId)
+    public CategorizationLog getLog(Long id) {
+        return logRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Log not found"));
     }
 }
