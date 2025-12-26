@@ -1,28 +1,20 @@
-package com.example.demo.controller;
-
-import com.example.demo.model.CategorizationRule;
-import com.example.demo.repository.CategorizationRuleRepository;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/rules")
+@Tag(name = "Categorization Rule Controller", description = "Rule APIs")
 public class CategorizationRuleController {
 
-    private final CategorizationRuleRepository repo;
-
-    public CategorizationRuleController(CategorizationRuleRepository repo) {
-        this.repo = repo;
+    @PostMapping("/{categoryId}")
+    public String createRule(@PathVariable Long categoryId) {
+        return "Rule created for category " + categoryId;
     }
 
-    @PostMapping
-    public CategorizationRule create(@RequestBody CategorizationRule r) {
-        return repo.save(r);
+    @GetMapping("/category/{categoryId}")
+    public String listRules(@PathVariable Long categoryId) {
+        return "Rules for category " + categoryId;
     }
 
-    @GetMapping
-    public List<CategorizationRule> getAll() {
-        return repo.findAll();
+    @GetMapping("/{id}")
+    public String getRule(@PathVariable Long id) {
+        return "Rule " + id;
     }
 }

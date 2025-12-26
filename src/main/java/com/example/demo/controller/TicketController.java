@@ -1,28 +1,20 @@
-package com.example.demo.controller;
-
-import com.example.demo.model.Ticket;
-import com.example.demo.repository.TicketRepository;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/tickets")
+@Tag(name = "Ticket Controller", description = "Ticket management APIs")
 public class TicketController {
 
-    private final TicketRepository repo;
-
-    public TicketController(TicketRepository repo) {
-        this.repo = repo;
-    }
-
     @PostMapping
-    public Ticket create(@RequestBody Ticket t) {
-        return repo.save(t);
+    public String createTicket() {
+        return "Ticket created";
     }
 
     @GetMapping
-    public List<Ticket> getAll() {
-        return repo.findAll();
+    public String listTickets() {
+        return "All tickets";
+    }
+
+    @GetMapping("/{id}")
+    public String getTicket(@PathVariable Long id) {
+        return "Ticket " + id;
     }
 }
