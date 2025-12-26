@@ -47,4 +47,3 @@ public class TicketCategorizationEngine {
         logs.add(log);
     }
 }
-
