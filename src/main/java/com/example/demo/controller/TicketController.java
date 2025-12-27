@@ -1,13 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CreateTicketRequest;
 import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/tickets")
+@RequestMapping("/tickets")
 public class TicketController {
 
     private final TicketService ticketService;
@@ -17,17 +17,7 @@ public class TicketController {
     }
 
     @PostMapping
-    public Ticket createTicket(@RequestBody Ticket ticket) {
-        return ticketService.createTicket(ticket);
-    }
-
-    @GetMapping
-    public List<Ticket> getAllTickets() {
-        return ticketService.getAllTickets();
-    }
-
-    @GetMapping("/{id}")
-    public Ticket getTicket(@PathVariable Long id) {
-        return ticketService.getTicket(id);
+    public Ticket createTicket(@Valid @RequestBody CreateTicketRequest request) {
+        return ticketService.createTicket(request);
     }
 }
