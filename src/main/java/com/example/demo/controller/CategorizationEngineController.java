@@ -18,17 +18,17 @@ public class CategorizationEngineController {
     }
 
     @PostMapping("/run/{ticketId}")
-    public Ticket categorize(@PathVariable Long ticketId) {
+    public Ticket categorizeTicket(@PathVariable Long ticketId) {
         return engineService.categorizeTicket(ticketId);
     }
 
     @GetMapping("/logs/{ticketId}")
-    public List<CategorizationLog> logs(@PathVariable Long ticketId) {
+    public List<CategorizationLog> getLogs(@PathVariable Long ticketId) {
         return engineService.getLogsForTicket(ticketId);
     }
 
     @GetMapping("/log/{id}")
-    public CategorizationLog log(@PathVariable Long id) {
+    public CategorizationLog getLog(@PathVariable Long id) {
         return engineService.getLog(id);
     }
 }
