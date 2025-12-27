@@ -3,11 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.dto.CreateTicketRequest;
 import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/tickets")
+@RequestMapping("/api/tickets")
 public class TicketController {
 
     private final TicketService ticketService;
@@ -17,7 +16,12 @@ public class TicketController {
     }
 
     @PostMapping
-    public Ticket createTicket(@Valid @RequestBody CreateTicketRequest request) {
+    public Ticket createTicket(@RequestBody CreateTicketRequest request) {
         return ticketService.createTicket(request);
+    }
+
+    @GetMapping("/{id}")
+    public Ticket getTicket(@PathVariable Long id) {
+        return ticketService.getTicketById(id);
     }
 }
