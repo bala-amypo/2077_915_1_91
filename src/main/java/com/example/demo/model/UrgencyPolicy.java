@@ -1,42 +1,34 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "urgency_policies")
 public class UrgencyPolicy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String keyword;
+    private String policyName;
 
-    private String urgencyOverride;
+    private LocalDateTime createdAt;
 
-    // ===== REQUIRED METHODS =====
+    @ManyToMany
+    private List<Category> categories;
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public Long getId() { return id; }
 
-    public String getKeyword() {
-        return keyword;
-    }
+    public String getPolicyName() { return policyName; }
+    public void setPolicyName(String policyName) { this.policyName = policyName; }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public String getUrgencyOverride() {
-        return urgencyOverride;
-    }
-
-    public void setUrgencyOverride(String urgencyOverride) {
-        this.urgencyOverride = urgencyOverride;
-    }
+    public List<Category> getCategories() { return categories; }
 }
