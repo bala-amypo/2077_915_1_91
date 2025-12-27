@@ -2,46 +2,48 @@ package com.example.demo.util;
 
 import com.example.demo.model.*;
 
-import org.springframework.stereotype.Component;
-
+import java.util.Comparator;
 import java.util.List;
 
-@Component
 public class TicketCategorizationEngine {
 
-    public Ticket categorize(
+    public void categorize(
             Ticket ticket,
+            List<Category> categories,
             List<CategorizationRule> rules,
-            List<UrgencyPolicy> policies
-    ) {
+            List<UrgencyPolicy> policies,
+            List<CategorizationLog> logs) {
 
-        // ===== CATEGORY ASSIGNMENT =====
-        for (CategorizationRule rule : rules) {
-            if (ticket.getTitle() != null &&
-                ticket.getTitle().toLowerCase()
-                        .contains(rule.getKeyword().toLowerCase())) {
+        CategorizationRule matchedRule = rules.stream()
+                .filter(r -> r.getKeyword() != null
+                        && ticket.getDescription() != null
+                        && ticket.getDescription().toLowerCase()
+                        .contains(r.getKeyword().toLowerCase()))
+                .max(Comparator.comparingInt(CategorizationRule::getPriority))
+                .orElse(null);
 
-                ticket.setAssignedCategory(
-                        rule.getCategory().getCategoryName()
-                );
-                ticket.setUrgency(
-                        rule.getCategory().getDefaultUrgency()
-                );
-                break;
-            }
+        if (matchedRule != null) {
+            ticket.setAssignedCategory(matchedRule.getCategory());
+            ticket.setUrgencyLevel(matchedRule.getCategory().getDefaultUrgency());
         }
 
-        // ===== URGENCY OVERRIDE =====
         for (UrgencyPolicy policy : policies) {
-            if (ticket.getTitle() != null &&
-                ticket.getTitle().toLowerCase()
-                        .contains(policy.getKeyword().toLowerCase())) {
-
-                ticket.setUrgency(policy.getUrgencyOverride());
-                break;
+            if (ticket.getDescription() != null
+                    && policy.getKeyword() != null
+                    && ticket.getDescription().toLowerCase()
+                    .contains(policy.getKeyword().toLowerCase())) {
+                ticket.setUrgencyLevel(policy.getUrgencyOverride());
             }
         }
 
-        return ticket;
+        if (ticket.getUrgencyLevel() == null) {
+            ticket.setUrgencyLevel("LOW");
+        }
+
+        CategorizationLog log = new CategorizationLog();
+        log.setTicket(ticket);
+        log.setAppliedRule(matchedRule);
+        log.setFinalUrgency(ticket.getUrgencyLevel());
+        logs.add(log);
     }
 }
