@@ -11,9 +11,7 @@ public class CategorizationRule {
     private Long id;
 
     private String keyword;
-
     private String matchType;
-
     private Integer priority;
 
     @ManyToOne
@@ -36,5 +34,9 @@ public class CategorizationRule {
 
     public void setMatchType(String matchType) {
         this.matchType = matchType;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

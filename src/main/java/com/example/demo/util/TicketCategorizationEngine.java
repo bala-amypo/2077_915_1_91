@@ -2,6 +2,7 @@ package com.example.demo.util;
 
 import com.example.demo.model.*;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Component
@@ -9,38 +10,36 @@ public class TicketCategorizationEngine {
 
     public void categorize(
             Ticket ticket,
-            List<Category> categories,
             List<CategorizationRule> rules,
-            List<UrgencyPolicy> policies,
-            List<CategorizationLog> logs
+            List<UrgencyPolicy> policies
     ) {
-
-        ticket.setUrgencyLevel("LOW");
+        String urgency = "LOW";
+        Category matchedCategory = null;
+        CategorizationRule matchedRule = null;
 
         for (CategorizationRule rule : rules) {
             if (ticket.getDescription() != null &&
-                rule.getKeyword() != null &&
-                ticket.getDescription().toLowerCase().contains(rule.getKeyword().toLowerCase())) {
+                ticket.getDescription().toLowerCase()
+                        .contains(rule.getKeyword().toLowerCase())) {
 
-                ticket.setAssignedCategory(rule.getCategory());
-                ticket.setUrgencyLevel(rule.getCategory().getDefaultUrgency());
-
-                CategorizationLog log = new CategorizationLog();
-                log.setTicket(ticket);
-                log.setAppliedRule(rule);
-                log.setAssignedCategory(rule.getCategory().getCategoryName());
-                log.setAssignedUrgency(ticket.getUrgencyLevel());
-
-                logs.add(log);
+                matchedRule = rule;
+                matchedCategory = rule.getCategory();
                 break;
             }
         }
 
+        if (matchedCategory != null) {
+            ticket.setAssignedCategory(matchedCategory);
+            urgency = matchedCategory.getDefaultUrgency();
+        }
+
         for (UrgencyPolicy policy : policies) {
-            if (ticket.getAssignedCategory() != null &&
-                policy.getCategories().contains(ticket.getAssignedCategory())) {
-                ticket.setUrgencyLevel(policy.getUrgencyOverride());
+            if (matchedCategory != null &&
+                policy.getCategories().contains(matchedCategory)) {
+                urgency = policy.getUrgencyOverride();
             }
         }
+
+        ticket.setUrgencyLevel(urgency);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,18 +13,10 @@ public class UrgencyPolicy {
     private Long id;
 
     private String policyName;
-
     private String urgencyOverride;
-
-    private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "urgencyPolicies")
     private Set<Category> categories = new HashSet<>();
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
 
     public void setPolicyName(String policyName) {
         this.policyName = policyName;
