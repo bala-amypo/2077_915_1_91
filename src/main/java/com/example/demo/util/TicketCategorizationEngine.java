@@ -12,10 +12,8 @@ public class TicketCategorizationEngine {
                            List<CategorizationRule> rules,
                            List<UrgencyPolicy> policies) {
 
-        // DEFAULT urgency if nothing matches
         ticket.setUrgencyLevel("LOW");
 
-        // Apply categorization rules
         for (CategorizationRule rule : rules) {
             if (ticket.getDescription() != null &&
                 rule.getKeyword() != null &&
@@ -28,7 +26,6 @@ public class TicketCategorizationEngine {
             }
         }
 
-        // Apply urgency policy override
         for (UrgencyPolicy policy : policies) {
             if (ticket.getCategory() != null &&
                 policy.getCategories().contains(ticket.getCategory())) {
