@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "logs")
 public class CategorizationLog {
 
     @Id
@@ -13,11 +14,10 @@ public class CategorizationLog {
     private Ticket ticket;
 
     private String assignedCategory;
+
     private String assignedUrgency;
 
-    public Long getId() {
-        return id;
-    }
+    // ===== REQUIRED METHODS =====
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
