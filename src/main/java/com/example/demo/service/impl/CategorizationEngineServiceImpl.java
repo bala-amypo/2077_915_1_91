@@ -6,6 +6,7 @@ import com.example.demo.service.CategorizationEngineService;
 import com.example.demo.util.TicketCategorizationEngine;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,21 +37,22 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
 
     @Override
     public Ticket categorize(Long ticketId) {
+
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
 
         List<Category> categories = categoryRepository.findAll();
+        List<CategorizationRule> rules = ruleRepository.findAll();
         List<UrgencyPolicy> policies = policyRepository.findAll();
+        List<CategorizationLog> logs = new ArrayList<>();
 
-        Category category = categories.isEmpty() ? null : categories.get(0);
-        UrgencyPolicy policy = policies.isEmpty() ? null : policies.get(0);
+        Ticket result = engine.categorize(
+                ticket, categories, rules, policies, logs
+        );
 
-        if (category != null && policy != null) {
-            engine.categorize(category, policy);
-            ticket.setAssignedCategory(category);
-            ticket.setUrgency(policy.getUrgencyOverride());
-        }
+        ticketRepository.save(result);
+        logRepository.saveAll(logs);
 
-        return ticketRepository.save(ticket);
+        return result;
     }
 
     @Override
