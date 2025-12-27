@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class UrgencyPolicy {
@@ -11,18 +8,15 @@ public class UrgencyPolicy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String keyword;
+    private String urgencyOverride;
 
-    private String name;
-    private String description;
-
-    // Add these methods so tests can access ID
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getKeyword() { return keyword; }
+    public void setKeyword(String keyword) { this.keyword = keyword; }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getUrgencyOverride() { return urgencyOverride; }
+    public void setUrgencyOverride(String urgencyOverride) { this.urgencyOverride = urgencyOverride; }
 }
-
