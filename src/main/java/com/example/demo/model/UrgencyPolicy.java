@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "urgency_policies")
 public class UrgencyPolicy {
 
     @Id
@@ -10,14 +11,16 @@ public class UrgencyPolicy {
     private Long id;
 
     private String keyword;
+
     private String urgencyOverride;
-    private String policyName;
+
+    // ===== REQUIRED METHODS =====
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {   // REQUIRED
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -35,9 +38,5 @@ public class UrgencyPolicy {
 
     public void setUrgencyOverride(String urgencyOverride) {
         this.urgencyOverride = urgencyOverride;
-    }
-
-    public void setPolicyName(String policyName) {
-        this.policyName = policyName;
     }
 }
