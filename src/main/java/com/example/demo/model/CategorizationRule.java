@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "categorization_rules")
 public class CategorizationRule {
 
     @Id
@@ -13,38 +14,43 @@ public class CategorizationRule {
 
     private String matchType;
 
-    private int priority;
+    private Integer priority;
 
     @ManyToOne
     private Category category;
 
-    // ===== GETTERS & SETTERS =====
+    @PrePersist
+    public void prePersist() {
+        if (priority == null) {
+            priority = 1;
+        }
+    }
 
     public Long getId() {
         return id;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
     }
 
     public String getKeyword() {
         return keyword;
     }
 
-    public void setMatchType(String matchType) {
-        this.matchType = matchType;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public String getMatchType() {
         return matchType;
     }
 
-    public int getPriority() {
+    public void setMatchType(String matchType) {
+        this.matchType = matchType;
+    }
+
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
@@ -54,12 +60,5 @@ public class CategorizationRule {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (this.priority == 0) {
-            this.priority = 1;
-        }
     }
 }

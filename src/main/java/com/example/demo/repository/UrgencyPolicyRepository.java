@@ -9,3 +9,4 @@ public interface UrgencyPolicyRepository extends JpaRepository<UrgencyPolicy, Lo
 
     List<UrgencyPolicy> findByKeywordContainingIgnoreCase(String keyword);
 }
+

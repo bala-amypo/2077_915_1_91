@@ -9,3 +9,4 @@ public interface CategorizationRuleRepository extends JpaRepository<Categorizati
 
     List<CategorizationRule> findByKeywordContainingIgnoreCase(String keyword);
 }
+
