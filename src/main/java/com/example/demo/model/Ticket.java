@@ -1,10 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tickets")
 public class Ticket {
 
     @Id
@@ -18,10 +18,10 @@ public class Ticket {
 
     private String urgencyLevel;
 
-    @ManyToOne
-    private Category assignedCategory;
-
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    private Category category;
 
     public Ticket() {
     }
@@ -30,7 +30,6 @@ public class Ticket {
         return id;
     }
 
-    // REQUIRED BY TESTS
     public void setId(Long id) {
         this.id = id;
     }
@@ -59,19 +58,18 @@ public class Ticket {
         this.urgencyLevel = urgencyLevel;
     }
 
-    public Category getAssignedCategory() {
-        return assignedCategory;
-    }
-
-    public void setAssignedCategory(Category assignedCategory) {
-        this.assignedCategory = assignedCategory;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    // REQUIRED BY TESTS
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
