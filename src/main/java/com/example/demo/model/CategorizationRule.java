@@ -13,6 +13,9 @@ public class CategorizationRule {
 
     private Integer priority;
 
+    @ManyToOne
+    private Category category;
+
     @PrePersist
     public void prePersist() {
         if (priority == null) {
@@ -20,11 +23,14 @@ public class CategorizationRule {
         }
     }
 
+    public Long getId() { return id; }
+
     public String getKeyword() { return keyword; }
     public void setKeyword(String keyword) { this.keyword = keyword; }
 
     public Integer getPriority() { return priority; }
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
+    public void setPriority(Integer priority) { this.priority = priority; }
+
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 }
