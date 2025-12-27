@@ -16,23 +16,39 @@ public class Category {
 
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    // ===== GETTERS & SETTERS =====
+
+    public Long getId() {
+        return id;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {   // TESTS REQUIRE THIS
+        this.id = id;
+    }
 
-    public String getCategoryName() { return categoryName; }
+    public String getCategoryName() {
+        return categoryName;
+    }
+
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
-    public String getDefaultUrgency() { return defaultUrgency; }
+    public String getDefaultUrgency() {
+        return defaultUrgency;
+    }
+
     public void setDefaultUrgency(String defaultUrgency) {
         this.defaultUrgency = defaultUrgency;
     }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    // ===== LIFECYCLE METHOD =====
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

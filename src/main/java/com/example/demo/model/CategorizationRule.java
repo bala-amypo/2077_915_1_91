@@ -11,26 +11,55 @@ public class CategorizationRule {
 
     private String keyword;
 
-    private Integer priority;
+    private String matchType;
+
+    private int priority;
 
     @ManyToOne
     private Category category;
 
-    @PrePersist
-    public void prePersist() {
-        if (priority == null) {
-            priority = 1;
-        }
+    // ===== GETTERS & SETTERS =====
+
+    public Long getId() {
+        return id;
     }
 
-    public Long getId() { return id; }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
-    public String getKeyword() { return keyword; }
-    public void setKeyword(String keyword) { this.keyword = keyword; }
+    public String getKeyword() {
+        return keyword;
+    }
 
-    public Integer getPriority() { return priority; }
-    public void setPriority(Integer priority) { this.priority = priority; }
+    public void setMatchType(String matchType) {
+        this.matchType = matchType;
+    }
 
-    public Category getCategory() { return category; }
-    public void setCategory(Category category) { this.category = category; }
+    public String getMatchType() {
+        return matchType;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.priority == 0) {
+            this.priority = 1;
+        }
+    }
 }

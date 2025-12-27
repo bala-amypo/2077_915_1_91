@@ -12,31 +12,53 @@ public class Ticket {
 
     private String title;
 
-    private String urgency;
+    private String assignedCategory;
 
-    @ManyToOne
-    private Category assignedCategory;
+    private String urgency;
 
     private LocalDateTime createdAt;
 
+    // ===== GETTERS & SETTERS =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {   // TESTS REQUIRE THIS
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {  // TESTS REQUIRE THIS
+        this.title = title;
+    }
+
+    public String getAssignedCategory() {  // TESTS REQUIRE THIS
+        return assignedCategory;
+    }
+
+    public void setAssignedCategory(String assignedCategory) {
+        this.assignedCategory = assignedCategory;
+    }
+
+    public String getUrgency() {
+        return urgency;
+    }
+
+    public void setUrgency(String urgency) {
+        this.urgency = urgency;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    // ===== LIFECYCLE METHOD (TESTS REQUIRE THIS) =====
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getUrgency() { return urgency; }
-    public void setUrgency(String urgency) { this.urgency = urgency; }
-
-    public Category getAssignedCategory() { return assignedCategory; }
-    public void setAssignedCategory(Category assignedCategory) {
-        this.assignedCategory = assignedCategory;
-    }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
 }

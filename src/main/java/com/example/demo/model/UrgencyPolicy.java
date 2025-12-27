@@ -13,13 +13,28 @@ public class UrgencyPolicy {
 
     private String urgencyOverride;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ===== GETTERS & SETTERS =====
 
-    public String getKeyword() { return keyword; }
-    public void setKeyword(String keyword) { this.keyword = keyword; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getUrgencyOverride() { return urgencyOverride; }
+    public void setId(Long id) {   // TESTS REQUIRE THIS
+        this.id = id;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getUrgencyOverride() {
+        return urgencyOverride;
+    }
+
     public void setUrgencyOverride(String urgencyOverride) {
         this.urgencyOverride = urgencyOverride;
     }
