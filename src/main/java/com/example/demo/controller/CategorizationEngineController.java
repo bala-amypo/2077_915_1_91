@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categorize")
+@RequestMapping("/engine")
 public class CategorizationEngineController {
 
     private final CategorizationEngineService engineService;
@@ -17,18 +17,18 @@ public class CategorizationEngineController {
         this.engineService = engineService;
     }
 
-    @PostMapping("/run/{ticketId}")
-    public Ticket categorizeTicket(@PathVariable Long ticketId) {
-        return engineService.categorizeTicket(ticketId);
+    @PostMapping("/categorize/{ticketId}")
+    public Ticket categorize(@PathVariable Long ticketId) {
+        return engineService.categorize(ticketId);
     }
 
-    @GetMapping("/logs/{ticketId}")
-    public List<CategorizationLog> getLogs(@PathVariable Long ticketId) {
+    @GetMapping("/logs/{logId}")
+    public CategorizationLog getLog(@PathVariable Long logId) {
+        return engineService.getLog(logId);
+    }
+
+    @GetMapping("/logs/ticket/{ticketId}")
+    public List<CategorizationLog> getLogsForTicket(@PathVariable Long ticketId) {
         return engineService.getLogsForTicket(ticketId);
-    }
-
-    @GetMapping("/log/{id}")
-    public CategorizationLog getLog(@PathVariable Long id) {
-        return engineService.getLog(id);
     }
 }
