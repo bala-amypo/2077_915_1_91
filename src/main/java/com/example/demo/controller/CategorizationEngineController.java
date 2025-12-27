@@ -32,4 +32,3 @@ public class CategorizationEngineController {
         return engineService.getLog(id);
     }
 }
-`

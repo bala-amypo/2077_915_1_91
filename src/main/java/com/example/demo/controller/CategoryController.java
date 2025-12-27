@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CreateCategoryRequest;
 import com.example.demo.model.Category;
 import com.example.demo.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -16,12 +17,17 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category create(@RequestBody CreateCategoryRequest request) {
-        return categoryService.createCategory(request);
+    public Category createCategory(@RequestBody Category category) {
+        return categoryService.createCategory(category);
+    }
+
+    @GetMapping
+    public List<Category> getAllCategories() {
+        return categoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public Category get(@PathVariable Long id) {
-        return categoryService.getCategoryById(id);
+    public Category getCategory(@PathVariable Long id) {
+        return categoryService.getCategory(id);
     }
 }
