@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "tickets")
 public class Ticket {
 
     @Id
@@ -18,19 +19,20 @@ public class Ticket {
     private String urgencyLevel;
 
     @ManyToOne
-    @JoinColumn(name = "assigned_category_id")
     private Category assignedCategory;
 
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now();
+    public Ticket() {
     }
-
 
     public Long getId() {
         return id;
+    }
+
+    // REQUIRED BY TESTS
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -48,6 +50,7 @@ public class Ticket {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getUrgencyLevel() {
         return urgencyLevel;
     }
@@ -66,5 +69,11 @@ public class Ticket {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    // REQUIRED BY TESTS
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 }

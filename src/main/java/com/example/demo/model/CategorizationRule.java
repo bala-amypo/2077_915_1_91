@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "categorization_rules")
 public class CategorizationRule {
 
     @Id
@@ -11,22 +12,26 @@ public class CategorizationRule {
     private Long id;
 
     private String keyword;
-    private String matchType;
-    private Integer priority;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private String matchType;
+
+    private Integer priority;
 
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now();
+    @ManyToOne
+    private Category category;
+
+    public CategorizationRule() {
     }
 
     public Long getId() {
         return id;
+    }
+
+    // REQUIRED BY TESTS
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getKeyword() {
@@ -63,5 +68,11 @@ public class CategorizationRule {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    // REQUIRED BY TESTS
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 }
