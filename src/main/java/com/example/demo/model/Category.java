@@ -1,59 +1,58 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "categories")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String categoryName;
+
+    private String defaultUrgency;
 
     private LocalDateTime createdAt;
 
     @ManyToMany
+    @JoinTable(
+            name = "category_policies",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "policy_id")
+    )
     private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
-    public Category() {
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public String getName() {
-        return name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getDefaultUrgency() {
+        return defaultUrgency;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public void setDefaultUrgency(String defaultUrgency) {
+        this.defaultUrgency = defaultUrgency;
     }
 
     public Set<UrgencyPolicy> getUrgencyPolicies() {
         return urgencyPolicies;
-    }
-
-    public void addUrgencyPolicy(UrgencyPolicy policy) {
-        this.urgencyPolicies.add(policy);
-        policy.getCategories().add(this);
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
     }
 }
