@@ -1,28 +1,27 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "urgency_policy")
 public class UrgencyPolicy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String policyName;
-
     private String keyword;
 
-    private String urgencyOverride;
+    private String urgencyLevel;
 
     private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "urgencyPolicies")
-    private List<Category> categories = new ArrayList<>();
+    private Set<Category> categories = new HashSet<>();
 
     public UrgencyPolicy() {
     }
@@ -31,17 +30,8 @@ public class UrgencyPolicy {
         return id;
     }
 
-    // REQUIRED BY TESTS
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPolicyName() {
-        return policyName;
-    }
-
-    public void setPolicyName(String policyName) {
-        this.policyName = policyName;
     }
 
     public String getKeyword() {
@@ -52,26 +42,37 @@ public class UrgencyPolicy {
         this.keyword = keyword;
     }
 
-    public String getUrgencyOverride() {
-        return urgencyOverride;
+    public String getUrgencyLevel() {
+        return urgencyLevel;
     }
 
-    public void setUrgencyOverride(String urgencyOverride) {
-        this.urgencyOverride = urgencyOverride;
+    public void setUrgencyLevel(String urgencyLevel) {
+        this.urgencyLevel = urgencyLevel;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    // REQUIRED BY TESTS
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // REQUIRED BY TESTS
-    public List<Category> getCategories() {
-        return categories;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UrgencyPolicy)) return false;
+        UrgencyPolicy that = (UrgencyPolicy) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

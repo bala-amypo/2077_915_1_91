@@ -1,31 +1,24 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "categories")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String categoryName;
-
-    private String defaultUrgency;
+    private String name;
 
     private LocalDateTime createdAt;
 
     @ManyToMany
-    @JoinTable(
-        name = "categories_urgency_policies",
-        joinColumns = @JoinColumn(name = "categories_id"),
-        inverseJoinColumns = @JoinColumn(name = "urgency_policies_id")
-    )
-    private List<UrgencyPolicy> urgencyPolicies = new ArrayList<>();
+    private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
     public Category() {
     }
@@ -34,39 +27,33 @@ public class Category {
         return id;
     }
 
-    // REQUIRED BY TESTS
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getDefaultUrgency() {
-        return defaultUrgency;
-    }
-
-    public void setDefaultUrgency(String defaultUrgency) {
-        this.defaultUrgency = defaultUrgency;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    // REQUIRED BY TESTS
+    public Set<UrgencyPolicy> getUrgencyPolicies() {
+        return urgencyPolicies;
+    }
+
+    public void addUrgencyPolicy(UrgencyPolicy policy) {
+        this.urgencyPolicies.add(policy);
+        policy.getCategories().add(this);
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
-    }
-
-    // REQUIRED BY TESTS
-    public List<UrgencyPolicy> getUrgencyPolicies() {
-        return urgencyPolicies;
     }
 }
