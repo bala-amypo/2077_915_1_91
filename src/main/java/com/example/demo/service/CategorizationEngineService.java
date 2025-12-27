@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CategorizationEngineService {
 
-    Ticket categorizeTicket(Long ticketId);
-
-    List<CategorizationLog> getLogsForTicket(Long ticketId);
+    Ticket categorize(Long ticketId);
 
     CategorizationLog getLog(Long logId);
+
+    List<CategorizationLog> getLogsForTicket(Long ticketId);
 }
