@@ -10,9 +10,6 @@ public class CreateTicketRequest {
     @NotBlank
     private String description;
 
-    public CreateTicketRequest() {
-    }
-
     public String getTitle() {
         return title;
     }
