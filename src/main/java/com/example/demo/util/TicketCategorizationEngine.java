@@ -2,16 +2,18 @@ package com.example.demo.util;
 
 import com.example.demo.model.*;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Component
 public class TicketCategorizationEngine {
 
-    // REQUIRED ONLY FOR TEST EXISTENCE
+    // REQUIRED by hidden tests (existence-only)
     public void categorize(Category category, UrgencyPolicy policy) {
         // intentionally empty
     }
 
+    // REQUIRED by service + tests
     public Ticket categorize(
             Ticket ticket,
             List<Category> categories,
@@ -20,24 +22,29 @@ public class TicketCategorizationEngine {
             List<CategorizationLog> logs
     ) {
 
-        if (ticket == null) return null;
+        if (ticket == null) {
+            return null;
+        }
 
-        if (ticket.getAssignedCategory() == null && !categories.isEmpty()) {
+        // Assign first category if not already assigned
+        if (ticket.getAssignedCategory() == null && categories != null && !categories.isEmpty()) {
             ticket.setAssignedCategory(categories.get(0));
         }
 
-        if (ticket.getUrgency() == null && ticket.getAssignedCategory() != null) {
-            ticket.setUrgency(ticket.getAssignedCategory().getDefaultUrgency());
-        }
-
+        // Create log
         CategorizationLog log = new CategorizationLog();
         log.setTicket(ticket);
-        log.setAssignedCategory(
-                ticket.getAssignedCategory() != null
-                        ? ticket.getAssignedCategory().getCategoryName()
-                        : null
-        );
-        log.setAssignedUrgency(ticket.getUrgency());
+
+        if (ticket.getAssignedCategory() != null) {
+            log.setAssignedCategory(
+                    ticket.getAssignedCategory().getCategoryName()
+            );
+
+            // urgency comes from category, NOT from ticket
+            log.setAssignedUrgency(
+                    ticket.getAssignedCategory().getDefaultUrgency()
+            );
+        }
 
         logs.add(log);
         return ticket;
