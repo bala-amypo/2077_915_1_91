@@ -1,7 +1,9 @@
 package com.example.demo.util;
 
 import com.example.demo.model.*;
+
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Component
@@ -9,25 +11,37 @@ public class TicketCategorizationEngine {
 
     public Ticket categorize(
             Ticket ticket,
-            List<Category> categories,
             List<CategorizationRule> rules,
-            List<UrgencyPolicy> policies,
-            List<CategorizationLog> logs
+            List<UrgencyPolicy> policies
     ) {
 
+        // ===== CATEGORY ASSIGNMENT =====
         for (CategorizationRule rule : rules) {
             if (ticket.getTitle() != null &&
                 ticket.getTitle().toLowerCase()
-                      .contains(rule.getKeyword().toLowerCase())) {
+                        .contains(rule.getKeyword().toLowerCase())) {
 
-                Category category = categories.get(0);
-                ticket.setAssignedCategory(category);
-                ticket.setUrgency(category.getDefaultUrgency());
-                return ticket;
+                ticket.setAssignedCategory(
+                        rule.getCategory().getCategoryName()
+                );
+                ticket.setUrgency(
+                        rule.getCategory().getDefaultUrgency()
+                );
+                break;
             }
         }
 
-        ticket.setUrgency("LOW");
+        // ===== URGENCY OVERRIDE =====
+        for (UrgencyPolicy policy : policies) {
+            if (ticket.getTitle() != null &&
+                ticket.getTitle().toLowerCase()
+                        .contains(policy.getKeyword().toLowerCase())) {
+
+                ticket.setUrgency(policy.getUrgencyOverride());
+                break;
+            }
+        }
+
         return ticket;
     }
 }
