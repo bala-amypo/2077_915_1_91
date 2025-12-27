@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "tickets")
 public class Ticket {
 
     @Id
@@ -12,53 +13,62 @@ public class Ticket {
 
     private String title;
 
-    private String assignedCategory;
+    @Column(length = 500)
+    private String description;
 
-    private String urgency;
+    @ManyToOne
+    private Category assignedCategory;
+
+    private String urgencyLevel;
 
     private LocalDateTime createdAt;
 
-    // ===== GETTERS & SETTERS =====
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {   // TESTS REQUIRE THIS
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
-
-    public void setTitle(String title) {  // TESTS REQUIRE THIS
+    
+    public void setTitle(String title) {
         this.title = title;
     }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public String getAssignedCategory() {  // TESTS REQUIRE THIS
+    public Category getAssignedCategory() {
         return assignedCategory;
     }
 
-    public void setAssignedCategory(String assignedCategory) {
+    public void setAssignedCategory(Category assignedCategory) {
         this.assignedCategory = assignedCategory;
     }
 
-    public String getUrgency() {
-        return urgency;
+    public String getUrgencyLevel() {
+        return urgencyLevel;
     }
 
-    public void setUrgency(String urgency) {
-        this.urgency = urgency;
+    public void setUrgencyLevel(String urgencyLevel) {
+        this.urgencyLevel = urgencyLevel;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    // ===== LIFECYCLE METHOD (TESTS REQUIRE THIS) =====
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
     }
 }

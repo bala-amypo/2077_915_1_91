@@ -2,8 +2,11 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "categories")
 public class Category {
 
     @Id
@@ -16,39 +19,43 @@ public class Category {
 
     private LocalDateTime createdAt;
 
-    // ===== GETTERS & SETTERS =====
+    @ManyToMany
+    private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {   // TESTS REQUIRE THIS
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getCategoryName() {
         return categoryName;
     }
-
+    
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-
+    
     public String getDefaultUrgency() {
         return defaultUrgency;
     }
-
+    
     public void setDefaultUrgency(String defaultUrgency) {
         this.defaultUrgency = defaultUrgency;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public Set<UrgencyPolicy> getUrgencyPolicies() {
+        return urgencyPolicies;
     }
 
-    // ===== LIFECYCLE METHOD =====
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }
