@@ -1,25 +1,53 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "rules")
+@Table(name = "categorization_rules")
 public class CategorizationRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String keyword;
 
-    private String matchType;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UrgencyLevel urgency;
 
-    private Integer priority;
+    @Column(nullable = false)
+    private Integer priority = 0;
 
-    @ManyToOne
-    private Category category;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
-    // ===== REQUIRED METHODS =====
+    // =======================
+    // JPA CALLBACK
+    // =======================
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        if (priority == null) {
+            priority = 0;
+        }
+    }
+
+    // =======================
+    // GETTERS & SETTERS
+    // =======================
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getKeyword() {
         return keyword;
@@ -29,35 +57,24 @@ public class CategorizationRule {
         this.keyword = keyword;
     }
 
-    public String getMatchType() {
-        return matchType;
+    // ✅ THIS IS THE CRITICAL FIX
+    public UrgencyLevel getUrgency() {
+        return urgency;
     }
 
-    public void setMatchType(String matchType) {
-        this.matchType = matchType;
+    public void setUrgency(UrgencyLevel urgency) {
+        this.urgency = urgency;
     }
 
     public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
-    public Category getCategory() {
-        return category;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (this.priority == null) {
-            this.priority = 1;
-        }
-    }
-
 }
