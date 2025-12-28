@@ -1,8 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "categorization_logs")
 public class CategorizationLog {
 
     @Id
@@ -15,11 +17,36 @@ public class CategorizationLog {
     @ManyToOne
     private CategorizationRule appliedRule;
 
-    public Long getId() { return id; }
+    private String message;
 
-    public Ticket getTicket() { return ticket; }
-    public void setTicket(Ticket ticket) { this.ticket = ticket; }
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    public CategorizationRule getAppliedRule() { return appliedRule; }
-    public void setAppliedRule(CategorizationRule appliedRule) { this.appliedRule = appliedRule; }
+    public CategorizationLog() {
+    }
+
+    public CategorizationLog(Ticket ticket, CategorizationRule rule, String message) {
+        this.ticket = ticket;
+        this.appliedRule = rule;
+        this.message = message;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public CategorizationRule getAppliedRule() {
+        return appliedRule;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

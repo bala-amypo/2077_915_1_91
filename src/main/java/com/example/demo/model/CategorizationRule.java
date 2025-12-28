@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "categorization_rules")
 public class CategorizationRule {
 
     @Id
@@ -10,24 +11,57 @@ public class CategorizationRule {
     private Long id;
 
     private String keyword;
+
     private String matchType;
-    private int priority;
+
+    private Integer priority;
 
     @ManyToOne
     private Category category;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public CategorizationRule() {
+    }
 
-    public String getKeyword() { return keyword; }
-    public void setKeyword(String keyword) { this.keyword = keyword; }
+    @PrePersist
+    public void prePersist() {
+        if (this.priority == null) {
+            this.priority = 1;
+        }
+    }
 
-    public String getMatchType() { return matchType; }
-    public void setMatchType(String matchType) { this.matchType = matchType; }
+    public Long getId() {
+        return id;
+    }
 
-    public int getPriority() { return priority; }
-    public void setPriority(int priority) { this.priority = priority; }
+    public String getKeyword() {
+        return keyword;
+    }
 
-    public Category getCategory() { return category; }
-    public void setCategory(Category category) { this.category = category; }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getMatchType() {
+        return matchType;
+    }
+
+    public void setMatchType(String matchType) {
+        this.matchType = matchType;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
