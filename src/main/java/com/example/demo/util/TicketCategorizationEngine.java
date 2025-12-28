@@ -1,11 +1,13 @@
 package com.example.demo.util;
 
 import com.example.demo.model.*;
+import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+@Component
 public class TicketCategorizationEngine {
 
     public void categorize(Ticket ticket,
@@ -15,10 +17,10 @@ public class TicketCategorizationEngine {
                            List<CategorizationLog> logs) {
 
         CategorizationRule matchedRule = rules.stream()
-            .sorted(Comparator.comparing(CategorizationRule::getPriority).reversed())
-            .filter(r -> matches(ticket, r))
-            .findFirst()
-            .orElse(null);
+                .sorted(Comparator.comparing(CategorizationRule::getPriority).reversed())
+                .filter(r -> matches(ticket, r))
+                .findFirst()
+                .orElse(null);
 
         if (matchedRule != null) {
             ticket.setAssignedCategory(matchedRule.getCategory());
@@ -39,7 +41,8 @@ public class TicketCategorizationEngine {
     }
 
     private boolean matches(Ticket ticket, CategorizationRule rule) {
-        String text = (ticket.getTitle() + " " + ticket.getDescription()).toLowerCase(Locale.ROOT);
+        String text = (ticket.getTitle() + " " + ticket.getDescription())
+                .toLowerCase(Locale.ROOT);
         return text.contains(rule.getKeyword().toLowerCase());
     }
 }
