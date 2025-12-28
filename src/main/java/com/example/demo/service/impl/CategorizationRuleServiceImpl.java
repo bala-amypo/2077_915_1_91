@@ -3,28 +3,24 @@ package com.example.demo.service.impl;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.CategorizationRule;
 import com.example.demo.repository.CategorizationRuleRepository;
-import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategorizationRuleService;
 
 public class CategorizationRuleServiceImpl implements CategorizationRuleService {
 
-    private final CategorizationRuleRepository ruleRepository;
-    private final CategoryRepository categoryRepository;
+    private final CategorizationRuleRepository repository;
 
-    public CategorizationRuleServiceImpl(CategorizationRuleRepository ruleRepository,
-                                         CategoryRepository categoryRepository) {
-        this.ruleRepository = ruleRepository;
-        this.categoryRepository = categoryRepository;
+    public CategorizationRuleServiceImpl(CategorizationRuleRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public CategorizationRule createRule(CategorizationRule rule) {
-        return ruleRepository.save(rule);
+        return repository.save(rule);
     }
 
     @Override
     public CategorizationRule getRule(Long id) {
-        return ruleRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
     }
 }
