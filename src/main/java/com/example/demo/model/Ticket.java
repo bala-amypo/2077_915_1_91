@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Ticket {
@@ -9,29 +10,61 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
     private String description;
+
     private String urgencyLevel;
 
     @ManyToOne
     private Category assignedCategory;
 
-    public Ticket() {}
+    private LocalDateTime createdAt;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Ticket() {
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    // ✅ REQUIRED BY TESTS
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getUrgencyLevel() { return urgencyLevel; }
-    public void setUrgencyLevel(String urgencyLevel) { this.urgencyLevel = urgencyLevel; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Category getAssignedCategory() { return assignedCategory; }
+    // ✅ REQUIRED
+    public String getDescription() {
+        return description;
+    }
+
+    // ✅ REQUIRED
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Category getAssignedCategory() {
+        return assignedCategory;
+    }
+
     public void setAssignedCategory(Category assignedCategory) {
         this.assignedCategory = assignedCategory;
+    }
+
+    // ✅ REQUIRED
+    public String getUrgencyLevel() {
+        return urgencyLevel;
+    }
+
+    public void setUrgencyLevel(String urgencyLevel) {
+        this.urgencyLevel = urgencyLevel;
+    }
+
+    // ✅ REQUIRED
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

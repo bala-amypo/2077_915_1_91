@@ -11,12 +11,12 @@ public class UrgencyPolicy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
-    private String keyword;
-
     private String policyName;
 
     private String urgencyLevel;
+
+    // ✅ REQUIRED BY TESTS
+    private String urgencyOverride;
 
     private LocalDateTime createdAt;
 
@@ -26,13 +26,10 @@ public class UrgencyPolicy {
     public UrgencyPolicy() {
     }
 
-    // ---------- JPA lifecycle ----------
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
-
-    // ---------- getters & setters ----------
 
     public Long getId() {
         return id;
@@ -40,14 +37,6 @@ public class UrgencyPolicy {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
     }
 
     public String getPolicyName() {
@@ -64,6 +53,16 @@ public class UrgencyPolicy {
 
     public void setUrgencyLevel(String urgencyLevel) {
         this.urgencyLevel = urgencyLevel;
+    }
+
+    // ✅ REQUIRED
+    public String getUrgencyOverride() {
+        return urgencyOverride;
+    }
+
+    // ✅ REQUIRED
+    public void setUrgencyOverride(String urgencyOverride) {
+        this.urgencyOverride = urgencyOverride;
     }
 
     public LocalDateTime getCreatedAt() {
