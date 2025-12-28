@@ -15,3 +15,4 @@ public interface CategorizationEngineService {
     List<CategorizationLog> getLogsForTicket(Long ticketId);
 }
 
+p
