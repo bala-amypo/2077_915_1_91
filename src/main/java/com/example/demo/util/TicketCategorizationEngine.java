@@ -13,10 +13,11 @@ public class TicketCategorizationEngine {
             List<UrgencyPolicy> policies,
             List<CategorizationLog> logs
     ) {
-        String desc = ticket.getDescription().toLowerCase();
+        String description = ticket.getDescription().toLowerCase();
 
+        // Apply categorization rules
         for (CategorizationRule rule : rules) {
-            if (desc.contains(rule.getKeyword().toLowerCase())) {
+            if (description.contains(rule.getKeyword().toLowerCase())) {
                 ticket.setAssignedCategory(rule.getCategory());
                 ticket.setUrgencyLevel(rule.getCategory().getDefaultUrgency());
 
@@ -28,12 +29,14 @@ public class TicketCategorizationEngine {
             }
         }
 
-        for (UrgencyPolicy p : policies) {
-            if (desc.contains(p.getKeyword().toLowerCase())) {
-                ticket.setUrgencyLevel(p.getUrgencyOverride());
+        // Apply urgency override policies
+        for (UrgencyPolicy policy : policies) {
+            if (description.contains(policy.getKeyword().toLowerCase())) {
+                ticket.setUrgencyLevel(policy.getUrgencyOverride());
             }
         }
 
+        // Default urgency if nothing matched
         if (ticket.getUrgencyLevel() == null) {
             ticket.setUrgencyLevel("LOW");
         }
