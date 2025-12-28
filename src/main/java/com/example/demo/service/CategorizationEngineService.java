@@ -8,6 +8,5 @@ public interface CategorizationEngineService {
 
     Ticket categorizeTicket(Long ticketId);
 
-    // REQUIRED BY TEST CASES
     List<CategorizationLog> getLog(Long ticketId);
 }
