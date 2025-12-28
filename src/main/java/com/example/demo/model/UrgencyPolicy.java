@@ -1,46 +1,29 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Table(name = "urgency_policies")
 public class UrgencyPolicy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String keyword;
-    private String urgencyOverride;
+    private String urgency;
 
-    @ManyToMany(mappedBy = "urgencyPolicies")
-    private Set<Category> categories = new HashSet<>();
+    @OneToMany(mappedBy = "urgencyPolicy")
+    private List<Category> categories;
 
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public Long getId() {
+        return id;
     }
 
-    public Long getId() { return id; }
+    public String getUrgency() {
+        return urgency;
+    }
 
-    public void setId(Long id) { this.id = id; }
-
-    public String getKeyword() { return keyword; }
-
-    public void setKeyword(String keyword) { this.keyword = keyword; }
-
-    public void setPolicyName(String policyName) { this.keyword = policyName; }
-
-    public String getUrgencyOverride() { return urgencyOverride; }
-
-    public void setUrgencyOverride(String urgencyOverride) { this.urgencyOverride = urgencyOverride; }
-
-    public Set<Category> getCategories() { return categories; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public List<Category> getCategories() {
+        return categories;
+    }
 }

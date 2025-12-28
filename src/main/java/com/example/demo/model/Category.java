@@ -11,36 +11,20 @@ public class Category {
 
     private String name;
 
-    private String defaultUrgency;
+    @ManyToOne
+    private UrgencyPolicy urgencyPolicy;
 
-    public Category() {}
+    public Long getId() { return id; }
 
-    public Category(String name, String defaultUrgency) {
-        this.name = name;
-        this.defaultUrgency = defaultUrgency;
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
+    public UrgencyPolicy getUrgencyPolicy() {
+        return urgencyPolicy;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDefaultUrgency() {
-        return defaultUrgency;
-    }
-
-    public void setDefaultUrgency(String defaultUrgency) {
-        this.defaultUrgency = defaultUrgency;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUrgencyPolicy(UrgencyPolicy urgencyPolicy) {
+        this.urgencyPolicy = urgencyPolicy;
     }
 }
