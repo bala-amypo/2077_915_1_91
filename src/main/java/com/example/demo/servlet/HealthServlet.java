@@ -16,3 +16,4 @@ public class HealthServlet extends HttpServlet {
         resp.getWriter().write("OK");
     }
 }
+

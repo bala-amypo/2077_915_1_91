@@ -2,43 +2,48 @@ package com.example.demo.util;
 
 import com.example.demo.model.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class TicketCategorizationEngine {
 
-    public Ticket categorize(
+    public void categorize(
             Ticket ticket,
+            List<Category> categories,
             List<CategorizationRule> rules,
             List<UrgencyPolicy> policies,
-            List<CategorizationLog> logs
-    ) {
+            List<CategorizationLog> logs) {
+
+        CategorizationRule matchedRule = rules.stream()
+                .filter(r -> r.getKeyword() != null
+                        && ticket.getDescription() != null
+                        && ticket.getDescription().toLowerCase()
+                        .contains(r.getKeyword().toLowerCase()))
+                .max(Comparator.comparingInt(CategorizationRule::getPriority))
+                .orElse(null);
+
+        if (matchedRule != null) {
+            ticket.setAssignedCategory(matchedRule.getCategory());
+            ticket.setUrgencyLevel(matchedRule.getCategory().getDefaultUrgency());
+        }
 
         for (UrgencyPolicy policy : policies) {
-            if (policy.getCategories().contains(ticket.getCategory())
-                    && policy.getOverrideUrgency() != null) {
-
-                ticket.setUrgencyLevel(policy.getOverrideUrgency());
-                return ticket;
+            if (ticket.getDescription() != null
+                    && policy.getKeyword() != null
+                    && ticket.getDescription().toLowerCase()
+                    .contains(policy.getKeyword().toLowerCase())) {
+                ticket.setUrgencyLevel(policy.getUrgencyOverride());
             }
         }
 
-        for (CategorizationRule rule : rules) {
-            if (ticket.getDescription() != null &&
-                ticket.getDescription().toLowerCase()
-                        .contains(rule.getKeyword().toLowerCase())) {
-
-                ticket.setUrgencyLevel(rule.getUrgencyLevel());
-
-                CategorizationLog log = new CategorizationLog();
-                log.setTicket(ticket);
-                log.setAppliedRule(rule);
-                logs.add(log);
-
-                return ticket;
-            }
+        if (ticket.getUrgencyLevel() == null) {
+            ticket.setUrgencyLevel("LOW");
         }
 
-        ticket.setUrgencyLevel(UrgencyLevel.LOW);
-        return ticket;
+        CategorizationLog log = new CategorizationLog();
+        log.setTicket(ticket);
+        log.setAppliedRule(matchedRule);
+        log.setFinalUrgency(ticket.getUrgencyLevel());
+        logs.add(log);
     }
 }
