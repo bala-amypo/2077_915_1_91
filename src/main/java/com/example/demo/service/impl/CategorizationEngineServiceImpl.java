@@ -4,9 +4,12 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.CategorizationEngineService;
+import com.example.demo.util.TicketCategorizationEngine;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CategorizationEngineServiceImpl implements CategorizationEngineService {
 
     private final TicketRepository ticketRepository;
@@ -14,8 +17,9 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     private final CategorizationRuleRepository ruleRepository;
     private final UrgencyPolicyRepository policyRepository;
     private final CategorizationLogRepository logRepository;
+    private final TicketCategorizationEngine engine;
 
-    // 🔴 THIS CONSTRUCTOR MUST MATCH TEST EXACTLY
+    // ✅ Spring constructor
     public CategorizationEngineServiceImpl(
             TicketRepository ticketRepository,
             CategoryRepository categoryRepository,
@@ -23,11 +27,25 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
             UrgencyPolicyRepository policyRepository,
             CategorizationLogRepository logRepository
     ) {
+        this(ticketRepository, categoryRepository, ruleRepository, policyRepository, logRepository,
+                new TicketCategorizationEngine());
+    }
+
+    // ✅ Constructor required by TESTS
+    public CategorizationEngineServiceImpl(
+            TicketRepository ticketRepository,
+            CategoryRepository categoryRepository,
+            CategorizationRuleRepository ruleRepository,
+            UrgencyPolicyRepository policyRepository,
+            CategorizationLogRepository logRepository,
+            TicketCategorizationEngine engine
+    ) {
         this.ticketRepository = ticketRepository;
         this.categoryRepository = categoryRepository;
         this.ruleRepository = ruleRepository;
         this.policyRepository = policyRepository;
         this.logRepository = logRepository;
+        this.engine = engine;
     }
 
     @Override
@@ -35,26 +53,20 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
-        for (CategorizationRule rule : ruleRepository.findAll()) {
-            if (ticket.getDescription() != null &&
-                ticket.getDescription().toLowerCase().contains(rule.getKeyword().toLowerCase())) {
+        engine.categorize(
+                ticket,
+                categoryRepository.findAll(),
+                ruleRepository.findAll(),
+                policyRepository.findAll(),
+                logRepository
+        );
 
-                ticket.setAssignedCategory(rule.getCategory());
-                ticket.setUrgencyLevel(rule.getCategory().getDefaultUrgency());
-
-                CategorizationLog log = new CategorizationLog();
-                log.setTicket(ticket);
-                log.setAppliedRule(rule);
-                logRepository.save(log);
-                break;
-            }
-        }
         return ticket;
     }
 
-    // 🔥 REQUIRED BY TEST
+    // REQUIRED BY TESTS
     @Override
-    public List<CategorizationLog> getLogsForTicket(Long ticketId) {
+    public List<CategorizationLog> getLog(Long ticketId) {
         return logRepository.findByTicket_Id(ticketId);
     }
 }
