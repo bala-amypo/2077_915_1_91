@@ -13,46 +13,38 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     private final TicketRepository ticketRepository;
     private final CategoryRepository categoryRepository;
     private final CategorizationRuleRepository ruleRepository;
-    private final UrgencyPolicyRepository policyRepository;
     private final CategorizationLogRepository logRepository;
 
-    // ✅ REQUIRED CONSTRUCTOR (Spring uses this)
     public CategorizationEngineServiceImpl(
             TicketRepository ticketRepository,
             CategoryRepository categoryRepository,
             CategorizationRuleRepository ruleRepository,
-            UrgencyPolicyRepository policyRepository,
             CategorizationLogRepository logRepository
     ) {
         this.ticketRepository = ticketRepository;
         this.categoryRepository = categoryRepository;
         this.ruleRepository = ruleRepository;
-        this.policyRepository = policyRepository;
         this.logRepository = logRepository;
     }
 
     @Override
-    public Ticket categorizeTicket(Long ticketId) {
-        Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+    public void categorize(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
 
-        for (CategorizationRule rule : ruleRepository.findAll()) {
-            if (ticket.getDescription().toLowerCase().contains(rule.getKeyword().toLowerCase())) {
-                ticket.setCategory(rule.getCategory());
-                ticket.setUrgency(rule.getUrgency());
+        Category category = ticket.getCategory();
+        String urgency = category.getDefaultUrgency();
 
-                CategorizationLog log = new CategorizationLog();
-                log.setTicket(ticket);
-                log.setRule(rule);
-                logRepository.save(log);
-                break;
-            }
-        }
-        return ticket;
+        CategorizationRule rule = new CategorizationRule();
+        rule.setUrgency(urgency);
+
+        CategorizationLog log = new CategorizationLog();
+        log.setRule(rule);
+
+        logRepository.save(log);
     }
 
     @Override
     public List<CategorizationLog> getLogsForTicket(Long ticketId) {
-        return logRepository.findByTicket_Id(ticketId);
+        return logRepository.findByTicketId(ticketId);
     }
 }

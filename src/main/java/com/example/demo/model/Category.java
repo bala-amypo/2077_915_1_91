@@ -11,10 +11,13 @@ public class Category {
 
     private String name;
 
+    private String defaultUrgency;
+
     public Category() {}
 
-    public Category(String name) {
+    public Category(String name, String defaultUrgency) {
         this.name = name;
+        this.defaultUrgency = defaultUrgency;
     }
 
     public Long getId() {
@@ -27,6 +30,14 @@ public class Category {
 
     public String getName() {
         return name;
+    }
+
+    public String getDefaultUrgency() {
+        return defaultUrgency;
+    }
+
+    public void setDefaultUrgency(String defaultUrgency) {
+        this.defaultUrgency = defaultUrgency;
     }
 
     public void setName(String name) {
