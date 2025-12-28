@@ -11,32 +11,15 @@ public class CategorizationLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ✅ Ticket relation
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "ticket_id")
+    @ManyToOne
     private Ticket ticket;
 
-    // ✅ Applied rule relation (MANDATORY for tests)
     @ManyToOne
-    @JoinColumn(name = "rule_id")
     private CategorizationRule appliedRule;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private String finalUrgency;
 
-    // =====================
-    // JPA CALLBACK
-    // =====================
-    @PrePersist
-    public void prePersist() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-    }
-
-    // =====================
-    // GETTERS & SETTERS
-    // =====================
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Long getId() {
         return id;
@@ -50,13 +33,20 @@ public class CategorizationLog {
         this.ticket = ticket;
     }
 
-    // ✅ REQUIRED BY TEST: testCategorizationLogAppliedRuleManyToOne
     public CategorizationRule getAppliedRule() {
         return appliedRule;
     }
 
     public void setAppliedRule(CategorizationRule appliedRule) {
         this.appliedRule = appliedRule;
+    }
+
+    public String getFinalUrgency() {
+        return finalUrgency;
+    }
+
+    public void setFinalUrgency(String finalUrgency) {
+        this.finalUrgency = finalUrgency;
     }
 
     public LocalDateTime getCreatedAt() {

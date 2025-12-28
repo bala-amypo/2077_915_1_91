@@ -8,3 +8,4 @@ public interface CategoryService {
 
     Category getCategory(Long id);
 }
+

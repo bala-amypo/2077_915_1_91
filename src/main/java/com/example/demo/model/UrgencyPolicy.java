@@ -1,10 +1,12 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "urgency_policies")
 public class UrgencyPolicy {
 
     @Id
@@ -13,19 +15,53 @@ public class UrgencyPolicy {
 
     private String policyName;
 
-    @Enumerated(EnumType.STRING)
-    private UrgencyLevel overrideUrgency;
+    private String keyword;
 
-    @ManyToMany
+    private String urgencyOverride;
+
+    private LocalDateTime createdAt;
+
+    @ManyToMany(mappedBy = "urgencyPolicies")
     private Set<Category> categories = new HashSet<>();
 
-    public UrgencyPolicy() {}
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
-    public UrgencyLevel getOverrideUrgency() {
-        return overrideUrgency;
+    public Long getId() {
+        return id;
+    }
+
+    public String getPolicyName() {
+        return policyName;
+    }
+
+    public void setPolicyName(String policyName) {
+        this.policyName = policyName;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getUrgencyOverride() {
+        return urgencyOverride;
+    }
+
+    public void setUrgencyOverride(String urgencyOverride) {
+        this.urgencyOverride = urgencyOverride;
     }
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }
