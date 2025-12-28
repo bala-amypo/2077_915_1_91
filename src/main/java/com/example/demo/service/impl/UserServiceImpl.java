@@ -22,12 +22,11 @@ public class UserServiceImpl implements UserService {
     }
 
     // ==================================================
-    // REQUIRED BY TEST: save(User)
+    // MUST MATCH UserService EXACTLY
     // ==================================================
     @Override
     public User save(User user) {
 
-        // 🔴 testRegisterUserDuplicateEmail expects IllegalArgumentException
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }
@@ -37,12 +36,10 @@ public class UserServiceImpl implements UserService {
     }
 
     // ==================================================
-    // REQUIRED BY TEST: findByEmail(String)
+    // MUST MATCH UserService EXACTLY
     // ==================================================
     @Override
     public User findByEmail(String email) {
-
-        // 🔴 testUserServiceFindByEmailNotFound expects ResourceNotFoundException
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found")
@@ -50,12 +47,10 @@ public class UserServiceImpl implements UserService {
     }
 
     // ==================================================
-    // REQUIRED BY TEST: getById(Long)
+    // MUST MATCH UserService EXACTLY
     // ==================================================
     @Override
     public User getById(Long id) {
-
-        // 🔴 testUserServiceGetByIdNotFound expects ResourceNotFoundException
         return userRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found")
