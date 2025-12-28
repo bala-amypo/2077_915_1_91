@@ -8,3 +8,4 @@ public interface UrgencyPolicyService {
 
     UrgencyPolicy getPolicy(Long id);
 }
+

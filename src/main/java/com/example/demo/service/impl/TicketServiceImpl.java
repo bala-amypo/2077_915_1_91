@@ -24,3 +24,4 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
     }
 }
+

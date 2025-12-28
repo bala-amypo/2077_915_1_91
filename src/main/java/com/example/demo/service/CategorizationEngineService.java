@@ -7,10 +7,9 @@ import java.util.List;
 
 public interface CategorizationEngineService {
 
-    // 🔴 NAME MUST MATCH IMPLEMENTATION
     Ticket categorizeTicket(Long ticketId);
 
-    CategorizationLog getLog(Long logId);
-
     List<CategorizationLog> getLogsForTicket(Long ticketId);
+
+    CategorizationLog getLog(Long logId);
 }
