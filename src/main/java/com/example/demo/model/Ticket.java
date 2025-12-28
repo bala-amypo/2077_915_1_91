@@ -26,17 +26,29 @@ public class Ticket {
     }
 
     public Long getId() { return id; }
+
     public void setId(Long id) { this.id = id; }
 
     public String getTitle() { return title; }
+
     public void setTitle(String title) { this.title = title; }
 
     public String getDescription() { return description; }
+
     public void setDescription(String description) { this.description = description; }
 
     public String getUrgencyLevel() { return urgencyLevel; }
+
     public void setUrgencyLevel(String urgencyLevel) { this.urgencyLevel = urgencyLevel; }
 
     public Category getAssignedCategory() { return assignedCategory; }
-    public void setAssignedCategory(Category assignedCategory) { this.assignedCategory = assignedCategory; }
+
+    public void setAssignedCategory(Category assignedCategory) {
+        this.assignedCategory = assignedCategory;
+    }
+
+    // 🔥 REQUIRED BY TEST
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

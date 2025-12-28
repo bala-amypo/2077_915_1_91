@@ -23,15 +23,21 @@ public class UrgencyPolicy {
     public Long getId() { return id; }
 
     public String getKeyword() { return keyword; }
+
     public void setKeyword(String keyword) { this.keyword = keyword; }
 
-    // 🔥 REQUIRED BY TEST
+    // REQUIRED BY TEST
     public void setPolicyName(String policyName) {
         this.keyword = policyName;
     }
 
     public String getUrgencyOverride() { return urgencyOverride; }
-    public void setUrgencyOverride(String urgencyOverride) { this.urgencyOverride = urgencyOverride; }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setUrgencyOverride(String urgencyOverride) {
+        this.urgencyOverride = urgencyOverride;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
