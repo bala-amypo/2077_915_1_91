@@ -1,9 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class UrgencyPolicy {
@@ -12,77 +11,21 @@ public class UrgencyPolicy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Used by repository
-    private String keyword;
-
-    // ✅ REQUIRED by tests
     private String policyName;
 
-    // ✅ REQUIRED by tests
-    private String urgencyOverride;
+    @Enumerated(EnumType.STRING)
+    private UrgencyLevel overrideUrgency;
 
-    // ✅ REQUIRED by tests
-    private LocalDateTime createdAt;
-
-    // ✅ REQUIRED by tests
     @ManyToMany
-    private List<Category> categories = new ArrayList<>();
+    private Set<Category> categories = new HashSet<>();
 
-    public UrgencyPolicy() {
+    public UrgencyPolicy() {}
+
+    public UrgencyLevel getOverrideUrgency() {
+        return overrideUrgency;
     }
 
-    // ✅ REQUIRED
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    // Repository needs this
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    // ✅ REQUIRED
-    public String getPolicyName() {
-        return policyName;
-    }
-
-    // ✅ REQUIRED
-    public void setPolicyName(String policyName) {
-        this.policyName = policyName;
-    }
-
-    public String getUrgencyOverride() {
-        return urgencyOverride;
-    }
-
-    public void setUrgencyOverride(String urgencyOverride) {
-        this.urgencyOverride = urgencyOverride;
-    }
-
-    // ✅ REQUIRED
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    // ✅ REQUIRED
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
     }
 }

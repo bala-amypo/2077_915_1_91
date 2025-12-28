@@ -83,4 +83,8 @@ public class Ticket {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+    public Category getCategory() {
+    return category;
+}
+
 }

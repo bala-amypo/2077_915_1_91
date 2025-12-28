@@ -1,10 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "categorization_rules")
 public class CategorizationRule {
 
     @Id
@@ -13,22 +11,10 @@ public class CategorizationRule {
 
     private String keyword;
 
-    private String urgency; // ✅ STRING (NOT enum)
+    @Enumerated(EnumType.STRING)
+    private UrgencyLevel urgencyLevel;
 
-    private int priority = 0;
-
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-    }
-
-    // =====================
-    // GETTERS & SETTERS
-    // =====================
+    public CategorizationRule() {}
 
     public Long getId() {
         return id;
@@ -38,23 +24,7 @@ public class CategorizationRule {
         return keyword;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public String getUrgency() {
-        return urgency;
-    }
-
-    public void setUrgency(String urgency) {
-        this.urgency = urgency;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public UrgencyLevel getUrgencyLevel() {
+        return urgencyLevel;
     }
 }

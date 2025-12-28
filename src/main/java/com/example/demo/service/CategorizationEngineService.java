@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CategorizationEngineService {
 
-    // ✅ EXACT method name expected by tests
+    // 🔴 NAME MUST MATCH IMPLEMENTATION
     Ticket categorizeTicket(Long ticketId);
 
     CategorizationLog getLog(Long logId);
