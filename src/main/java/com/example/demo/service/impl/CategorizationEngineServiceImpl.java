@@ -16,7 +16,23 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     private final UrgencyPolicyRepository policyRepository;
     private final CategorizationLogRepository logRepository;
 
-    // REQUIRED by Spring
+    // ✔ REQUIRED BY TEST (6 parameters)
+    public CategorizationEngineServiceImpl(
+            TicketRepository ticketRepository,
+            CategoryRepository categoryRepository,
+            CategorizationRuleRepository ruleRepository,
+            UrgencyPolicyRepository policyRepository,
+            CategorizationLogRepository logRepository,
+            com.example.demo.util.TicketCategorizationEngine engine
+    ) {
+        this.ticketRepository = ticketRepository;
+        this.categoryRepository = categoryRepository;
+        this.ruleRepository = ruleRepository;
+        this.policyRepository = policyRepository;
+        this.logRepository = logRepository;
+    }
+
+    // ✔ ALSO REQUIRED (Spring injection)
     public CategorizationEngineServiceImpl(
             TicketRepository ticketRepository,
             CategoryRepository categoryRepository,
@@ -24,11 +40,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
             UrgencyPolicyRepository policyRepository,
             CategorizationLogRepository logRepository
     ) {
-        this.ticketRepository = ticketRepository;
-        this.categoryRepository = categoryRepository;
-        this.ruleRepository = ruleRepository;
-        this.policyRepository = policyRepository;
-        this.logRepository = logRepository;
+        this(ticketRepository, categoryRepository, ruleRepository, policyRepository, logRepository, null);
     }
 
     @Override
@@ -54,7 +66,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     }
 
     @Override
-    public List<CategorizationLog> getLog(Long ticketId) {
-        return logRepository.findByTicketId(ticketId);
+    public List<CategorizationLog> getLogsForTicket(Long ticketId) {
+        return logRepository.findByTicket_Id(ticketId);
     }
 }
