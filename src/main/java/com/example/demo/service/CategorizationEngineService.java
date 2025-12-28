@@ -15,4 +15,12 @@ public interface CategorizationEngineService {
     List<CategorizationLog> getLogsForTicket(Long ticketId);
 }
 
-p
+package com.example.demo.service;
+
+import com.example.demo.model.Ticket;
+
+public interface CategorizationEngineService {
+
+    // REQUIRED by test cases
+    Ticket categorizeTicket(Long ticketId);
+}
