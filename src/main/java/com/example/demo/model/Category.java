@@ -27,25 +27,15 @@ public class Category {
     }
 
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getCategoryName() { return categoryName; }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 
     public String getDefaultUrgency() { return defaultUrgency; }
+    public void setDefaultUrgency(String defaultUrgency) { this.defaultUrgency = defaultUrgency; }
 
-    public void setDefaultUrgency(String defaultUrgency) {
-        this.defaultUrgency = defaultUrgency;
-    }
+    public Set<UrgencyPolicy> getUrgencyPolicies() { return urgencyPolicies; }
 
-    public Set<UrgencyPolicy> getUrgencyPolicies() {
-        return urgencyPolicies;
-    }
-
-    // 🔥 REQUIRED BY TEST
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }

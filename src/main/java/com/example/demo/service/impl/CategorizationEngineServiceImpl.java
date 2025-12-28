@@ -4,6 +4,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.CategorizationEngineService;
+import com.example.demo.util.TicketCategorizationEngine;
 
 import java.util.List;
 
@@ -14,19 +15,22 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     private final CategorizationRuleRepository ruleRepository;
     private final UrgencyPolicyRepository policyRepository;
     private final CategorizationLogRepository logRepository;
+    private final TicketCategorizationEngine engine;
 
     public CategorizationEngineServiceImpl(
             TicketRepository ticketRepository,
             CategoryRepository categoryRepository,
             CategorizationRuleRepository ruleRepository,
             UrgencyPolicyRepository policyRepository,
-            CategorizationLogRepository logRepository
+            CategorizationLogRepository logRepository,
+            TicketCategorizationEngine engine
     ) {
         this.ticketRepository = ticketRepository;
         this.categoryRepository = categoryRepository;
         this.ruleRepository = ruleRepository;
         this.policyRepository = policyRepository;
         this.logRepository = logRepository;
+        this.engine = engine;
     }
 
     @Override
@@ -34,28 +38,19 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
-        // Apply rules
-        List<CategorizationRule> rules = ruleRepository.findAll();
-        for (CategorizationRule rule : rules) {
-            if (ticket.getDescription() != null &&
-                ticket.getDescription().toLowerCase().contains(rule.getKeyword().toLowerCase())) {
+        engine.categorize(
+                ticket,
+                categoryRepository.findAll(),
+                ruleRepository.findAll(),
+                policyRepository.findAll(),
+                logRepository.findAll()
+        );
 
-                ticket.setAssignedCategory(rule.getCategory());
-                ticket.setUrgencyLevel(rule.getCategory().getDefaultUrgency());
-
-                CategorizationLog log = new CategorizationLog();
-                log.setTicket(ticket);
-                log.setAppliedRule(rule);
-                logRepository.save(log);
-                break;
-            }
-        }
-
-        return ticketRepository.save(ticket);
+        return ticket;
     }
 
     @Override
-    public List<CategorizationLog> getLogsForTicket(Long ticketId) {
+    public List<CategorizationLog> getLog(Long ticketId) {
         return logRepository.findByTicket_Id(ticketId);
     }
 }
