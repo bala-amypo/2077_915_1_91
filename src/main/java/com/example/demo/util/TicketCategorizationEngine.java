@@ -13,7 +13,6 @@ public class TicketCategorizationEngine {
             List<CategorizationLog> logs
     ) {
 
-        // 1️⃣ Policy override has highest priority
         for (UrgencyPolicy policy : policies) {
             if (policy.getCategories().contains(ticket.getCategory())
                     && policy.getOverrideUrgency() != null) {
@@ -23,7 +22,6 @@ public class TicketCategorizationEngine {
             }
         }
 
-        // 2️⃣ Rule-based categorization
         for (CategorizationRule rule : rules) {
             if (ticket.getDescription() != null &&
                 ticket.getDescription().toLowerCase()
@@ -40,7 +38,6 @@ public class TicketCategorizationEngine {
             }
         }
 
-        // 3️⃣ Default LOW urgency
         ticket.setUrgencyLevel(UrgencyLevel.LOW);
         return ticket;
     }
