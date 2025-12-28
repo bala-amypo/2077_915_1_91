@@ -59,4 +59,5 @@ public class CategorizationRule {
             this.priority = 1;
         }
     }
+
 }
