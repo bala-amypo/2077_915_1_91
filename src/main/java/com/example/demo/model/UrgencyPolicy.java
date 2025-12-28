@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class UrgencyPolicy {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String keyword;
@@ -21,3 +21,4 @@ public class UrgencyPolicy {
     public String getUrgencyOverride() { return urgencyOverride; }
     public void setUrgencyOverride(String urgencyOverride) { this.urgencyOverride = urgencyOverride; }
 }
+

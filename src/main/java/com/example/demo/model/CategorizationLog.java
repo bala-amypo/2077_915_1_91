@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class CategorizationLog {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -23,4 +23,3 @@ public class CategorizationLog {
     public CategorizationRule getAppliedRule() { return appliedRule; }
     public void setAppliedRule(CategorizationRule appliedRule) { this.appliedRule = appliedRule; }
 }
-

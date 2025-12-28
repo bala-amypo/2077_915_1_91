@@ -7,7 +7,7 @@ import java.util.List;
 public class Category {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String categoryName;
@@ -27,3 +27,4 @@ public class Category {
 
     public List<UrgencyPolicy> getUrgencyPolicies() { return urgencyPolicies; }
 }
+
