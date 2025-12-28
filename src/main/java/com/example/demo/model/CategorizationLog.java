@@ -3,7 +3,6 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "logs")
 public class CategorizationLog {
 
     @Id
@@ -13,18 +12,33 @@ public class CategorizationLog {
     @ManyToOne
     private Ticket ticket;
 
-    private String assignedCategory;
+    @ManyToOne
+    private CategorizationRule appliedRule;
 
     private String assignedUrgency;
 
-    // ===== REQUIRED METHODS =====
+    public Long getId() {
+        return id;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
 
-    public void setAssignedCategory(String assignedCategory) {
-        this.assignedCategory = assignedCategory;
+    public CategorizationRule getAppliedRule() {
+        return appliedRule;
+    }
+
+    public void setAppliedRule(CategorizationRule appliedRule) {
+        this.appliedRule = appliedRule;
+    }
+
+    public String getAssignedUrgency() {
+        return assignedUrgency;
     }
 
     public void setAssignedUrgency(String assignedUrgency) {
