@@ -2,53 +2,46 @@ package com.example.demo.util;
 
 import com.example.demo.model.*;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class TicketCategorizationEngine {
 
-    public static String categorize(
+    public Ticket categorize(
             Ticket ticket,
             List<CategorizationRule> rules,
             List<UrgencyPolicy> policies,
             List<CategorizationLog> logs
     ) {
 
-        String urgency = null;
-        CategorizationRule appliedRule = null;
+        // 1️⃣ Policy override has highest priority
+        for (UrgencyPolicy policy : policies) {
+            if (policy.getCategories().contains(ticket.getCategory())
+                    && policy.getOverrideUrgency() != null) {
 
-        if (ticket != null && ticket.getDescription() != null) {
-            appliedRule = rules.stream()
-                    .filter(r -> ticket.getDescription()
-                            .toLowerCase()
-                            .contains(r.getKeyword().toLowerCase()))
-                    .max(Comparator.comparingInt(CategorizationRule::getPriority))
-                    .orElse(null);
-        }
-
-        if (appliedRule != null) {
-            urgency = appliedRule.getUrgency();
-
-            CategorizationLog log = new CategorizationLog();
-            log.setTicket(ticket);
-            log.setAppliedRule(appliedRule);
-            logs.add(log);
-        }
-
-        // ✅ policy override
-        if (policies != null) {
-            for (UrgencyPolicy p : policies) {
-                if (p.getUrgencyOverride() != null) {
-                    urgency = p.getUrgencyOverride();
-                }
+                ticket.setUrgencyLevel(policy.getOverrideUrgency());
+                return ticket;
             }
         }
 
-        // ✅ default
-        if (urgency == null) {
-            urgency = "LOW";
+        // 2️⃣ Rule-based categorization
+        for (CategorizationRule rule : rules) {
+            if (ticket.getDescription() != null &&
+                ticket.getDescription().toLowerCase()
+                        .contains(rule.getKeyword().toLowerCase())) {
+
+                ticket.setUrgencyLevel(rule.getUrgencyLevel());
+
+                CategorizationLog log = new CategorizationLog();
+                log.setTicket(ticket);
+                log.setAppliedRule(rule);
+                logs.add(log);
+
+                return ticket;
+            }
         }
 
-        return urgency;
+        // 3️⃣ Default LOW urgency
+        ticket.setUrgencyLevel(UrgencyLevel.LOW);
+        return ticket;
     }
 }
