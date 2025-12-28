@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.CategorizationEngineService;
@@ -17,6 +16,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     private final UrgencyPolicyRepository policyRepository;
     private final CategorizationLogRepository logRepository;
 
+    // REQUIRED by Spring
     public CategorizationEngineServiceImpl(
             TicketRepository ticketRepository,
             CategoryRepository categoryRepository,
@@ -34,7 +34,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     @Override
     public Ticket categorizeTicket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
 
         for (CategorizationRule rule : ruleRepository.findAll()) {
             if (ticket.getDescription() != null &&
@@ -55,7 +55,6 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
 
     @Override
     public List<CategorizationLog> getLog(Long ticketId) {
-        // ✅ THIS WAS THE BUG — MUST RETURN A LIST
         return logRepository.findByTicketId(ticketId);
     }
 }
