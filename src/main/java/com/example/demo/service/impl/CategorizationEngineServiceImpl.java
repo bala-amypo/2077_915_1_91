@@ -8,34 +8,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class CategorizationEngineServiceImpl implements CategorizationEngineService {
 
-    private final TicketRepository ticketRepository;
-    private final CategoryRepository categoryRepository;
-    private final CategorizationRuleRepository ruleRepository;
-    private final CategorizationLogRepository logRepository;
+    private final TicketRepository ticketRepo;
+    private final CategorizationRuleRepository ruleRepo;
+    private final CategorizationLogRepository logRepo;
 
     public CategorizationEngineServiceImpl(
-            TicketRepository ticketRepository,
-            CategoryRepository categoryRepository,
-            CategorizationRuleRepository ruleRepository,
-            CategorizationLogRepository logRepository
-    ) {
-        this.ticketRepository = ticketRepository;
-        this.categoryRepository = categoryRepository;
-        this.ruleRepository = ruleRepository;
-        this.logRepository = logRepository;
+            TicketRepository ticketRepo,
+            CategorizationRuleRepository ruleRepo,
+            CategorizationLogRepository logRepo) {
+        this.ticketRepo = ticketRepo;
+        this.ruleRepo = ruleRepo;
+        this.logRepo = logRepo;
     }
 
     @Override
     public CategorizationLog categorizeTicket(Long ticketId) {
-        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        Ticket ticket = ticketRepo.findById(ticketId).orElseThrow();
 
-        for (CategorizationRule rule : ruleRepository.findAll()) {
+        for (CategorizationRule rule : ruleRepo.findAll()) {
             if (ticket.getDescription().contains(rule.getKeyword())) {
                 ticket.setUrgencyLevel(rule.getUrgency());
+
                 CategorizationLog log = new CategorizationLog();
                 log.setTicket(ticket);
                 log.setAppliedRule(rule);
-                return logRepository.save(log);
+
+                return logRepo.save(log);
             }
         }
         return null;

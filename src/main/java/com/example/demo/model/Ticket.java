@@ -16,44 +16,23 @@ public class Ticket {
     @ManyToOne
     private Category category;
 
-    @ManyToOne
-    private Category assignedCategory;
+    public Long getId() { return id; }
 
-    // ----- getters & setters -----
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getUrgencyLevel() {
-        return urgencyLevel;
-    }
+    public String getUrgencyLevel() { return urgencyLevel; }
 
     public void setUrgencyLevel(String urgencyLevel) {
         this.urgencyLevel = urgencyLevel;
     }
 
-    public Category getCategory() {
-        return category;
-    }
+    public Category getCategory() { return category; }
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public Category getAssignedCategory() {
-        return assignedCategory;
-    }
-
-    public void setAssignedCategory(Category assignedCategory) {
-        this.assignedCategory = assignedCategory;
     }
 }

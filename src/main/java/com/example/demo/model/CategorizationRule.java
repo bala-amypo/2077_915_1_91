@@ -13,18 +13,11 @@ public class CategorizationRule {
 
     private String urgency;
 
-    @ManyToOne
-    private Category category;
-
     public String getKeyword() {
         return keyword;
     }
 
     public String getUrgency() {
         return urgency;
-    }
-
-    public Category getCategory() {
-        return category;
     }
 }
