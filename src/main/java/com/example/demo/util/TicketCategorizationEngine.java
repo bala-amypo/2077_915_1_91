@@ -1,57 +1,54 @@
 package com.example.demo.util;
 
 import com.example.demo.model.*;
+
 import java.util.Comparator;
 import java.util.List;
 
 public class TicketCategorizationEngine {
 
-    public static UrgencyLevel categorize(
+    public static String categorize(
             Ticket ticket,
             List<CategorizationRule> rules,
             List<UrgencyPolicy> policies,
             List<CategorizationLog> logs
     ) {
 
-        // ============================
-        // 1. Apply highest priority rule
-        // ============================
-        CategorizationRule matchedRule = rules.stream()
-                .filter(r -> ticket.getDescription() != null &&
-                        ticket.getDescription().toLowerCase().contains(r.getKeyword().toLowerCase()))
-                .max(Comparator.comparingInt(CategorizationRule::getPriority))
-                .orElse(null);
+        String urgency = null;
+        CategorizationRule appliedRule = null;
 
-        UrgencyLevel resultUrgency = null;
+        if (ticket != null && ticket.getDescription() != null) {
+            appliedRule = rules.stream()
+                    .filter(r -> ticket.getDescription()
+                            .toLowerCase()
+                            .contains(r.getKeyword().toLowerCase()))
+                    .max(Comparator.comparingInt(CategorizationRule::getPriority))
+                    .orElse(null);
+        }
 
-        if (matchedRule != null) {
-            resultUrgency = matchedRule.getUrgency();
+        if (appliedRule != null) {
+            urgency = appliedRule.getUrgency();
 
-            // ✅ Log ONLY ticket + rule (NO business fields)
             CategorizationLog log = new CategorizationLog();
             log.setTicket(ticket);
-            log.setAppliedRule(matchedRule);
+            log.setAppliedRule(appliedRule);
             logs.add(log);
         }
 
-        // ============================
-        // 2. Policy override
-        // ============================
+        // ✅ policy override
         if (policies != null) {
-            for (UrgencyPolicy policy : policies) {
-                if (policy.getOverrideUrgency() != null) {
-                    resultUrgency = policy.getOverrideUrgency();
+            for (UrgencyPolicy p : policies) {
+                if (p.getUrgencyOverride() != null) {
+                    urgency = p.getUrgencyOverride();
                 }
             }
         }
 
-        // ============================
-        // 3. Default LOW
-        // ============================
-        if (resultUrgency == null) {
-            resultUrgency = UrgencyLevel.LOW;
+        // ✅ default
+        if (urgency == null) {
+            urgency = "LOW";
         }
 
-        return resultUrgency;
+        return urgency;
     }
 }

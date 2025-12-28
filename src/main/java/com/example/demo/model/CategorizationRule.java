@@ -11,42 +11,27 @@ public class CategorizationRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String keyword;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UrgencyLevel urgency;
+    private String urgency; // ✅ STRING (NOT enum)
 
-    @Column(nullable = false)
-    private Integer priority = 0;
+    private int priority = 0;
 
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    // =======================
-    // JPA CALLBACK
-    // =======================
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
-        if (priority == null) {
-            priority = 0;
-        }
     }
 
-    // =======================
+    // =====================
     // GETTERS & SETTERS
-    // =======================
+    // =====================
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getKeyword() {
@@ -57,24 +42,19 @@ public class CategorizationRule {
         this.keyword = keyword;
     }
 
-    // ✅ THIS IS THE CRITICAL FIX
-    public UrgencyLevel getUrgency() {
+    public String getUrgency() {
         return urgency;
     }
 
-    public void setUrgency(UrgencyLevel urgency) {
+    public void setUrgency(String urgency) {
         this.urgency = urgency;
     }
 
-    public Integer getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(Integer priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 }
