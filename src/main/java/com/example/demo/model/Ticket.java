@@ -11,29 +11,22 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // REQUIRED by tests
     private String title;
 
-    // REQUIRED by tests
+    @Column(length = 500)
     private String description;
 
-    // REQUIRED by tests
-    private String urgencyLevel;
-
-    // REQUIRED by categorization
     @ManyToOne
     private Category assignedCategory;
 
-    // REQUIRED by logs/tests
+    private String urgencyLevel;
+
     private LocalDateTime createdAt;
 
-    // REQUIRED by tests
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
-
-    // ================= GETTERS & SETTERS =================
 
     public Long getId() {
         return id;
@@ -43,34 +36,22 @@ public class Ticket {
         this.id = id;
     }
 
-    // ---- TITLE ----
     public String getTitle() {
         return title;
     }
-
+    
     public void setTitle(String title) {
         this.title = title;
     }
-
-    // ---- DESCRIPTION ----
+    
     public String getDescription() {
         return description;
     }
-
+    
     public void setDescription(String description) {
         this.description = description;
     }
 
-    // ---- URGENCY LEVEL ----
-    public String getUrgencyLevel() {
-        return urgencyLevel;
-    }
-
-    public void setUrgencyLevel(String urgencyLevel) {
-        this.urgencyLevel = urgencyLevel;
-    }
-
-    // ---- CATEGORY ----
     public Category getAssignedCategory() {
         return assignedCategory;
     }
@@ -79,12 +60,15 @@ public class Ticket {
         this.assignedCategory = assignedCategory;
     }
 
-    // ---- CREATED AT ----
+    public String getUrgencyLevel() {
+        return urgencyLevel;
+    }
+
+    public void setUrgencyLevel(String urgencyLevel) {
+        this.urgencyLevel = urgencyLevel;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    public Category getCategory() {
-    return category;
-}
-
 }

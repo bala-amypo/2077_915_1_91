@@ -22,39 +22,37 @@ public class Category {
     @ManyToMany
     private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
-    // ===== REQUIRED METHODS =====
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getCategoryName() {
         return categoryName;
     }
-
+    
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-
+    
     public String getDefaultUrgency() {
         return defaultUrgency;
     }
-
+    
     public void setDefaultUrgency(String defaultUrgency) {
         this.defaultUrgency = defaultUrgency;
     }
 
     public Set<UrgencyPolicy> getUrgencyPolicies() {
         return urgencyPolicies;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
     }
 
     public LocalDateTime getCreatedAt() {
