@@ -1,62 +1,57 @@
 package com.example.demo.util;
 
-import com.example.demo.model.Category;
-import com.example.demo.model.CategorizationLog;
-import com.example.demo.model.CategorizationRule;
-import com.example.demo.model.Ticket;
-import com.example.demo.model.UrgencyPolicy;
-import org.springframework.stereotype.Component;
-
+import com.example.demo.model.*;
+import java.util.Comparator;
 import java.util.List;
 
-@Component
 public class TicketCategorizationEngine {
 
-    // REQUIRED by hidden tests (existence only)
-    public void categorize(Category category, UrgencyPolicy policy) {
-        // intentionally empty
-    }
-
-    // REQUIRED by service + hidden tests
-    public Ticket categorize(
+    public static UrgencyLevel categorize(
             Ticket ticket,
-            List<Category> categories,
             List<CategorizationRule> rules,
             List<UrgencyPolicy> policies,
             List<CategorizationLog> logs
     ) {
 
-        // Defensive null check
-        if (ticket == null) {
-            return null;
+        // ============================
+        // 1. Apply highest priority rule
+        // ============================
+        CategorizationRule matchedRule = rules.stream()
+                .filter(r -> ticket.getDescription() != null &&
+                        ticket.getDescription().toLowerCase().contains(r.getKeyword().toLowerCase()))
+                .max(Comparator.comparingInt(CategorizationRule::getPriority))
+                .orElse(null);
+
+        UrgencyLevel resultUrgency = null;
+
+        if (matchedRule != null) {
+            resultUrgency = matchedRule.getUrgency();
+
+            // ✅ Log ONLY ticket + rule (NO business fields)
+            CategorizationLog log = new CategorizationLog();
+            log.setTicket(ticket);
+            log.setAppliedRule(matchedRule);
+            logs.add(log);
         }
 
-        // Assign first category if not already assigned
-        if (ticket.getAssignedCategory() == null
-                && categories != null
-                && !categories.isEmpty()) {
-            ticket.setAssignedCategory(categories.get(0));
+        // ============================
+        // 2. Policy override
+        // ============================
+        if (policies != null) {
+            for (UrgencyPolicy policy : policies) {
+                if (policy.getOverrideUrgency() != null) {
+                    resultUrgency = policy.getOverrideUrgency();
+                }
+            }
         }
 
-        // IMPORTANT: hidden tests pass logs as NULL
-        // Must NOT throw NullPointerException
-        if (logs == null) {
-            return ticket;
+        // ============================
+        // 3. Default LOW
+        // ============================
+        if (resultUrgency == null) {
+            resultUrgency = UrgencyLevel.LOW;
         }
 
-        CategorizationLog log = new CategorizationLog();
-        log.setTicket(ticket);
-
-        if (ticket.getAssignedCategory() != null) {
-            log.setAssignedCategory(
-                    ticket.getAssignedCategory().getCategoryName()
-            );
-            log.setAssignedUrgency(
-                    ticket.getAssignedCategory().getDefaultUrgency()
-            );
-        }
-
-        logs.add(log);
-        return ticket;
+        return resultUrgency;
     }
 }
