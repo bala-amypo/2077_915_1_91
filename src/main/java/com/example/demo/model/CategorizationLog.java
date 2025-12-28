@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class CategorizationLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @ManyToOne
@@ -15,11 +15,12 @@ public class CategorizationLog {
     @ManyToOne
     private CategorizationRule appliedRule;
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
+    public Long getId() { return id; }
 
-    public void setAppliedRule(CategorizationRule rule) {
-        this.appliedRule = rule;
-    }
+    public Ticket getTicket() { return ticket; }
+    public void setTicket(Ticket ticket) { this.ticket = ticket; }
+
+    public CategorizationRule getAppliedRule() { return appliedRule; }
+    public void setAppliedRule(CategorizationRule appliedRule) { this.appliedRule = appliedRule; }
 }
+

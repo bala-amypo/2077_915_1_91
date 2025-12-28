@@ -1,30 +1,23 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 public class UrgencyPolicy {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    private String urgency;
+    private String keyword;
+    private String urgencyOverride;
 
-    @OneToMany(mappedBy = "urgencyPolicy")
-    private List<Category> categories;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getKeyword() { return keyword; }
+    public void setKeyword(String keyword) { this.keyword = keyword; }
 
-    public String getUrgency() {
-        return urgency;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
+    public String getUrgencyOverride() { return urgencyOverride; }
+    public void setUrgencyOverride(String urgencyOverride) { this.urgencyOverride = urgencyOverride; }
 }
-

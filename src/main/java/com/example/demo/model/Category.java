@@ -1,30 +1,29 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    private String name;
+    private String categoryName;
+    private String defaultUrgency;
 
-    @ManyToOne
-    private UrgencyPolicy urgencyPolicy;
+    @OneToMany(mappedBy = "category")
+    private List<UrgencyPolicy> urgencyPolicies;
 
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getName() { return name; }
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 
-    public void setName(String name) { this.name = name; }
+    public String getDefaultUrgency() { return defaultUrgency; }
+    public void setDefaultUrgency(String defaultUrgency) { this.defaultUrgency = defaultUrgency; }
 
-    public UrgencyPolicy getUrgencyPolicy() {
-        return urgencyPolicy;
-    }
-
-    public void setUrgencyPolicy(UrgencyPolicy urgencyPolicy) {
-        this.urgencyPolicy = urgencyPolicy;
-    }
+    public List<UrgencyPolicy> getUrgencyPolicies() { return urgencyPolicies; }
 }
