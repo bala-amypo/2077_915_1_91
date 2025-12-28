@@ -1,64 +1,41 @@
 package com.example.demo.util;
 
-import com.example.demo.model.Category;
-import com.example.demo.model.UrgencyPolicy;
+import com.example.demo.model.*;
+
+import java.util.List;
 
 public class TicketCategorizationEngine {
 
-    public void categorize(Category category, UrgencyPolicy policy) {
-        String defaultUrgency = category.getDefaultUrgency();
-        String keyword = policy.getKeyword();
-        String urgencyOverride = policy.getUrgencyOverride();
-        // Categorization logic here
+    public void categorize(
+            Ticket ticket,
+            List<Category> categories,
+            List<CategorizationRule> rules,
+            List<UrgencyPolicy> policies,
+            List<CategorizationLog> logs
+    ) {
+        String desc = ticket.getDescription().toLowerCase();
+
+        for (CategorizationRule rule : rules) {
+            if (desc.contains(rule.getKeyword().toLowerCase())) {
+                ticket.setAssignedCategory(rule.getCategory());
+                ticket.setUrgencyLevel(rule.getCategory().getDefaultUrgency());
+
+                CategorizationLog log = new CategorizationLog();
+                log.setTicket(ticket);
+                log.setAppliedRule(rule);
+                logs.add(log);
+                break;
+            }
+        }
+
+        for (UrgencyPolicy p : policies) {
+            if (desc.contains(p.getKeyword().toLowerCase())) {
+                ticket.setUrgencyLevel(p.getUrgencyOverride());
+            }
+        }
+
+        if (ticket.getUrgencyLevel() == null) {
+            ticket.setUrgencyLevel("LOW");
+        }
     }
 }
-
-// package com.example.demo.util;
-
-// import com.example.demo.model.*;
-
-// import java.util.Comparator;
-// import java.util.List;
-
-// public class TicketCategorizationEngine {
-
-//     public void categorize(
-//             Ticket ticket,
-//             List<Category> categories,
-//             List<CategorizationRule> rules,
-//             List<UrgencyPolicy> policies,
-//             List<CategorizationLog> logs) {
-
-//         CategorizationRule matchedRule = rules.stream()
-//                 .filter(r -> r.getKeyword() != null
-//                         && ticket.getDescription() != null
-//                         && ticket.getDescription().toLowerCase()
-//                         .contains(r.getKeyword().toLowerCase()))
-//                 .max(Comparator.comparingInt(CategorizationRule::getPriority))
-//                 .orElse(null);
-
-//         if (matchedRule != null) {
-//             ticket.setAssignedCategory(matchedRule.getCategory());
-//             ticket.setUrgencyLevel(matchedRule.getCategory().getDefaultUrgency());
-//         }
-
-//         for (UrgencyPolicy policy : policies) {
-//             if (ticket.getDescription() != null
-//                     && policy.getKeyword() != null
-//                     && ticket.getDescription().toLowerCase()
-//                     .contains(policy.getKeyword().toLowerCase())) {
-//                 ticket.setUrgencyLevel(policy.getUrgencyOverride());
-//             }
-//         }
-
-//         if (ticket.getUrgencyLevel() == null) {
-//             ticket.setUrgencyLevel("LOW");
-//         }
-
-//         CategorizationLog log = new CategorizationLog();
-//         log.setTicket(ticket);
-//         log.setAppliedRule(matchedRule);
-//         log.setFinalUrgency(ticket.getUrgencyLevel());
-//         logs.add(log);
-//     }
-// }

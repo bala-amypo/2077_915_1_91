@@ -12,14 +12,11 @@ public class Ticket {
     private Long id;
 
     private String title;
-
-    @Column(length = 500)
     private String description;
+    private String urgencyLevel;
 
     @ManyToOne
     private Category assignedCategory;
-
-    private String urgencyLevel;
 
     private LocalDateTime createdAt;
 
@@ -28,47 +25,18 @@ public class Ticket {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getTitle() {
-        return title;
-    }
-    
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-    public String getDescription() {
-        return description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public Category getAssignedCategory() {
-        return assignedCategory;
-    }
+    public String getUrgencyLevel() { return urgencyLevel; }
+    public void setUrgencyLevel(String urgencyLevel) { this.urgencyLevel = urgencyLevel; }
 
-    public void setAssignedCategory(Category assignedCategory) {
-        this.assignedCategory = assignedCategory;
-    }
-
-    public String getUrgencyLevel() {
-        return urgencyLevel;
-    }
-
-    public void setUrgencyLevel(String urgencyLevel) {
-        this.urgencyLevel = urgencyLevel;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public Category getAssignedCategory() { return assignedCategory; }
+    public void setAssignedCategory(Category assignedCategory) { this.assignedCategory = assignedCategory; }
 }
