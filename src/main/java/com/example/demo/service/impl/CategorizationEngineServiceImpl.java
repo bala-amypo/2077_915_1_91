@@ -35,9 +35,9 @@ public class CategorizationEngineServiceImpl
         this.engine = engine;
     }
 
-    // ✅ REQUIRED by hidden tests
+    // ✅ NAME MUST MATCH INTERFACE EXACTLY
     @Override
-    public Ticket categorizeTicket(Long ticketId) {
+    public Ticket categorize(Long ticketId) {
 
         Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
         if (ticket == null) {
@@ -47,8 +47,6 @@ public class CategorizationEngineServiceImpl
         List<Category> categories = categoryRepository.findAll();
         List<CategorizationRule> rules = ruleRepository.findAll();
         List<UrgencyPolicy> policies = policyRepository.findAll();
-
-        // ✅ FIXED METHOD NAME
         List<CategorizationLog> logs =
                 logRepository.findByTicket_Id(ticketId);
 
@@ -57,13 +55,11 @@ public class CategorizationEngineServiceImpl
         return ticketRepository.save(ticket);
     }
 
-    // ✅ REQUIRED by controller/tests
     @Override
     public CategorizationLog getLog(Long logId) {
         return logRepository.findById(logId).orElse(null);
     }
 
-    // ✅ REQUIRED by controller/tests
     @Override
     public List<CategorizationLog> getLogsForTicket(Long ticketId) {
         return logRepository.findByTicket_Id(ticketId);

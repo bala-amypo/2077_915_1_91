@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CategorizationEngineService {
 
+    // 🔴 THIS NAME MATTERS
     Ticket categorize(Long ticketId);
 
     CategorizationLog getLog(Long logId);
