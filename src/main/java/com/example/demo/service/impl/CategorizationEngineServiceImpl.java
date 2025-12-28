@@ -15,7 +15,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     private final UrgencyPolicyRepository policyRepository;
     private final CategorizationLogRepository logRepository;
 
-    // IMPORTANT: constructor signature MUST MATCH tests
+    // 🔴 THIS CONSTRUCTOR MUST MATCH TEST EXACTLY
     public CategorizationEngineServiceImpl(
             TicketRepository ticketRepository,
             CategoryRepository categoryRepository,
@@ -52,7 +52,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         return ticket;
     }
 
-    // 🚨 THIS METHOD WAS MISSING — REQUIRED BY TEST
+    // 🔥 REQUIRED BY TEST
     @Override
     public List<CategorizationLog> getLogsForTicket(Long ticketId) {
         return logRepository.findByTicket_Id(ticketId);
