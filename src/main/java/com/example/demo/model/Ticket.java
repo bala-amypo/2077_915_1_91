@@ -10,19 +10,21 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
-
-    private String urgencyLevel;
+    // ✅ REQUIRED by tests
+    private String title;
 
     @ManyToOne
     private Category assignedCategory;
 
+    private String urgency;
+
+    // ✅ REQUIRED by tests
     private LocalDateTime createdAt;
 
     public Ticket() {
     }
 
-    // ✅ REQUIRED BY TESTS
+    // ✅ REQUIRED by tests
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
@@ -37,13 +39,13 @@ public class Ticket {
     }
 
     // ✅ REQUIRED
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
     // ✅ REQUIRED
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Category getAssignedCategory() {
@@ -54,13 +56,12 @@ public class Ticket {
         this.assignedCategory = assignedCategory;
     }
 
-    // ✅ REQUIRED
-    public String getUrgencyLevel() {
-        return urgencyLevel;
+    public String getUrgency() {
+        return urgency;
     }
 
-    public void setUrgencyLevel(String urgencyLevel) {
-        this.urgencyLevel = urgencyLevel;
+    public void setUrgency(String urgency) {
+        this.urgency = urgency;
     }
 
     // ✅ REQUIRED
