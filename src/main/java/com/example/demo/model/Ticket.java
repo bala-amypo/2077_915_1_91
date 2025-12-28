@@ -4,31 +4,36 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "tickets")
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ✅ REQUIRED by tests
+    // REQUIRED by tests
     private String title;
 
+    // REQUIRED by tests
+    private String description;
+
+    // REQUIRED by tests
+    private String urgencyLevel;
+
+    // REQUIRED by categorization
     @ManyToOne
     private Category assignedCategory;
 
-    private String urgency;
-
-    // ✅ REQUIRED by tests
+    // REQUIRED by logs/tests
     private LocalDateTime createdAt;
 
-    public Ticket() {
-    }
-
-    // ✅ REQUIRED by tests
+    // REQUIRED by tests
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
+
+    // ================= GETTERS & SETTERS =================
 
     public Long getId() {
         return id;
@@ -38,16 +43,34 @@ public class Ticket {
         this.id = id;
     }
 
-    // ✅ REQUIRED
+    // ---- TITLE ----
     public String getTitle() {
         return title;
     }
 
-    // ✅ REQUIRED
     public void setTitle(String title) {
         this.title = title;
     }
 
+    // ---- DESCRIPTION ----
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    // ---- URGENCY LEVEL ----
+    public String getUrgencyLevel() {
+        return urgencyLevel;
+    }
+
+    public void setUrgencyLevel(String urgencyLevel) {
+        this.urgencyLevel = urgencyLevel;
+    }
+
+    // ---- CATEGORY ----
     public Category getAssignedCategory() {
         return assignedCategory;
     }
@@ -56,15 +79,7 @@ public class Ticket {
         this.assignedCategory = assignedCategory;
     }
 
-    public String getUrgency() {
-        return urgency;
-    }
-
-    public void setUrgency(String urgency) {
-        this.urgency = urgency;
-    }
-
-    // ✅ REQUIRED
+    // ---- CREATED AT ----
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
