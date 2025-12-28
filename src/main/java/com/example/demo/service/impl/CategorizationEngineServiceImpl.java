@@ -66,3 +66,4 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
                 .orElseThrow(() -> new ResourceNotFoundException("Log not found"));
     }
 }
+
