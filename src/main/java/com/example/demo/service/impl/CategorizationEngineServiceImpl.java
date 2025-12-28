@@ -5,8 +5,6 @@ import com.example.demo.repository.*;
 import com.example.demo.service.CategorizationEngineService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class CategorizationEngineServiceImpl implements CategorizationEngineService {
 
@@ -28,23 +26,18 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     }
 
     @Override
-    public void categorize(Long ticketId) {
+    public CategorizationLog categorizeTicket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
 
-        Category category = ticket.getCategory();
-        String urgency = category.getDefaultUrgency();
-
-        CategorizationRule rule = new CategorizationRule();
-        rule.setUrgency(urgency);
-
-        CategorizationLog log = new CategorizationLog();
-        log.setRule(rule);
-
-        logRepository.save(log);
-    }
-
-    @Override
-    public List<CategorizationLog> getLogsForTicket(Long ticketId) {
-        return logRepository.findByTicketId(ticketId);
+        for (CategorizationRule rule : ruleRepository.findAll()) {
+            if (ticket.getDescription().contains(rule.getKeyword())) {
+                ticket.setUrgencyLevel(rule.getUrgency());
+                CategorizationLog log = new CategorizationLog();
+                log.setTicket(ticket);
+                log.setAppliedRule(rule);
+                return logRepository.save(log);
+            }
+        }
+        return null;
     }
 }
