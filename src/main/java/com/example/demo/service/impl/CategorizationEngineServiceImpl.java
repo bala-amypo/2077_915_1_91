@@ -34,12 +34,28 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
-        return ticket;
+        // Apply rules
+        List<CategorizationRule> rules = ruleRepository.findAll();
+        for (CategorizationRule rule : rules) {
+            if (ticket.getDescription() != null &&
+                ticket.getDescription().toLowerCase().contains(rule.getKeyword().toLowerCase())) {
+
+                ticket.setAssignedCategory(rule.getCategory());
+                ticket.setUrgencyLevel(rule.getCategory().getDefaultUrgency());
+
+                CategorizationLog log = new CategorizationLog();
+                log.setTicket(ticket);
+                log.setAppliedRule(rule);
+                logRepository.save(log);
+                break;
+            }
+        }
+
+        return ticketRepository.save(ticket);
     }
 
-    // 🔥 REQUIRED BY TEST
-    public CategorizationLog getLog(Long id) {
-        return logRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Log not found"));
+    @Override
+    public List<CategorizationLog> getLogsForTicket(Long ticketId) {
+        return logRepository.findByTicket_Id(ticketId);
     }
 }
