@@ -34,10 +34,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
-        List<CategorizationRule> rules = ruleRepository.findAll();
-        List<UrgencyPolicy> policies = policyRepository.findAll();
-
-        for (CategorizationRule rule : rules) {
+        for (CategorizationRule rule : ruleRepository.findAll()) {
             if (ticket.getDescription() != null &&
                 ticket.getDescription().toLowerCase().contains(rule.getKeyword().toLowerCase())) {
 
@@ -54,7 +51,13 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         return ticket;
     }
 
-    // 🔥 THIS WAS MISSING — REQUIRED BY TEST
+    // REQUIRED BY TEST
+    @Override
+    public List<CategorizationLog> getLog(Long ticketId) {
+        return logRepository.findByTicket_Id(ticketId);
+    }
+
+    // REQUIRED BY TEST
     @Override
     public List<CategorizationLog> getLogsForTicket(Long ticketId) {
         return logRepository.findByTicket_Id(ticketId);
