@@ -17,13 +17,11 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
 
         return new OpenAPI()
-
-                // ✅ EXISTING SERVER CONFIG (UNCHANGED)
                 .servers(List.of(
-                        new Server().url("https://9091.408procr.amypo.ai/")
+                        new Server().url("hhttps://9091.408procr.amypo.ai/")
                 ))
 
-                // ✅ ONLY ADDITION (JWT SECURITY METADATA)
+        
                 .addSecurityItem(
                         new SecurityRequirement().addList("BearerAuth")
                 )
